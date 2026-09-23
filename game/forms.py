@@ -1,7 +1,7 @@
 from django import forms
 from django.utils.translation import gettext_lazy as _
 
-from . import engine
+from . import ai, engine
 from .models import Game
 
 
@@ -12,7 +12,22 @@ class NewGameForm(forms.Form):
         (engine.VICTORY_PROGRESSION, _("Victoria magna: three pieces in progression in the enemy half")),
     ]
 
-    mode = forms.ChoiceField(choices=Game.MODE_CHOICES, initial=Game.LOCAL, widget=forms.RadioSelect)
+    RANDOM = "random"
+    SIDE_CHOICES = [
+        (engine.WHITE, _("White (you move first)")),
+        (engine.BLACK, _("Black")),
+        (RANDOM, _("Random")),
+    ]
+
+    mode = forms.ChoiceField(choices=Game.MODE_CHOICES, initial=Game.AI, widget=forms.RadioSelect)
+    ai_level = forms.TypedChoiceField(
+        label=_("Computer level"),
+        choices=Game.AI_LEVEL_CHOICES,
+        coerce=int,
+        initial=ai.MEDIUM,
+        required=False,
+    )
+    side = forms.ChoiceField(label=_("You play"), choices=SIDE_CHOICES, initial=engine.WHITE, required=False)
     victory = forms.ChoiceField(choices=VICTORY_CHOICES, initial=engine.VICTORY_BODY)
     target = forms.IntegerField(
         required=False,
@@ -20,3 +35,10 @@ class NewGameForm(forms.Form):
         max_value=5000,
         help_text=_("Pieces (de corpore) or total value (de bonis). Leave empty for the default."),
     )
+
+    def clean(self):
+        data = super().clean()
+        if data.get("mode") == Game.AI:
+            data["ai_level"] = data.get("ai_level") or ai.MEDIUM
+            data["side"] = data.get("side") or engine.WHITE
+        return data

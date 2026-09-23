@@ -15,6 +15,9 @@ python3 -m venv .venv
 
 Then open http://127.0.0.1:8000/ and start a game:
 
+- **Against the computer**: pick your side and one of four levels (Beginner,
+  Easy, Medium, Hard). The bot lives in `game/ai.py`: it is an alpha-beta search
+  that looks up to three moves ahead.
 - **Same screen**: both players share one browser and take turns.
 - **Two browsers**: you play White and get an invite link to send to the
   person playing Black. Each page updates every 2 seconds. Anyone who opens the
@@ -32,6 +35,7 @@ The rules are at `/rules/`.
 
 - `game/engine.py`: the rules engine (movement, captures, victory). It is plain
   Python, and the game state is a JSON dict stored in `Game.state`.
+- `game/ai.py`: the computer opponent.
 - `game/views.py`: HTML pages plus a small JSON API (`state/`, `move/`, `resign/`).
 - `game/static/game/board.js`: draws the board and handles clicks and polling.
 

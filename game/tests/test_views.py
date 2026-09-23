@@ -91,6 +91,52 @@ class ViewTests(TestCase):
         res = self.post_json("game:move", game, {"key": "wrong", "from": [3, 2], "to": [4, 1]})
         self.assertEqual(res.status_code, 403)
 
+    def test_ai_game_as_white(self):
+        self.create(mode=Game.AI, ai_level="2", side="white")
+        game = Game.objects.get()
+        self.assertEqual((game.ai_side, game.ai_level), (engine.BLACK, 2))
+        page = self.client.get(reverse("game:play", args=[game.id]), {"key": game.white_key})
+        self.assertContains(page, "against the computer")
+
+        # Asking the bot to play out of turn changes nothing.
+        res = self.post_json("game:bot", game, {"key": game.white_key})
+        self.assertEqual(res.json()["version"], 0)
+
+        res = self.post_json("game:move", game, {"key": game.white_key, "from": [3, 2], "to": [4, 1]})
+        self.assertEqual(res.json()["ai"]["side"], engine.BLACK)
+        # The human cannot move for the computer.
+        res = self.post_json("game:move", game, {"key": game.white_key, "from": [12, 2], "to": [11, 1]})
+        self.assertEqual(res.status_code, 403)
+
+        res = self.post_json("game:bot", game, {"key": game.white_key})
+        data = res.json()
+        self.assertEqual((data["version"], data["turn"]), (2, engine.WHITE))
+        self.assertEqual(data["log"][-1]["side"], engine.BLACK)
+        self.assertTrue(data["legal_moves"])
+
+    def test_ai_game_as_black_bot_opens(self):
+        self.create(mode=Game.AI, ai_level="1", side="black")
+        game = Game.objects.get()
+        self.assertEqual(game.ai_side, engine.WHITE)
+        self.assertEqual(game.sides_for(game.white_key), [engine.BLACK])
+        data = self.post_json("game:bot", game, {"key": game.white_key}).json()
+        self.assertEqual(data["turn"], engine.BLACK)
+        self.assertEqual(data["your_sides"], [engine.BLACK])
+
+    def test_ai_defaults_and_random_side(self):
+        self.create(mode=Game.AI, ai_level="", side="random")
+        game = Game.objects.get()
+        self.assertEqual(game.ai_level, 3)
+        self.assertIn(game.ai_side, [engine.WHITE, engine.BLACK])
+
+    def test_bot_endpoint_rejects_other_modes_and_keys(self):
+        self.create()
+        game = Game.objects.get()
+        self.assertEqual(self.post_json("game:bot", game, {"key": game.white_key}).status_code, 403)
+        self.create(mode=Game.AI)
+        game = Game.objects.get(mode=Game.AI)
+        self.assertEqual(self.post_json("game:bot", game, {"key": "nope"}).status_code, 403)
+
     def test_resign(self):
         self.create(mode=Game.ONLINE)
         game = Game.objects.get()

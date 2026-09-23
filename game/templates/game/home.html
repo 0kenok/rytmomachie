@@ -23,6 +23,13 @@
     {% endfor %}
   </fieldset>
 
+  <div id="ai-options" class="ai-options">
+    <label for="{{ form.ai_level.id_for_label }}">{{ form.ai_level.label }}</label>
+    {{ form.ai_level }}
+    <label for="{{ form.side.id_for_label }}">{{ form.side.label }}</label>
+    {{ form.side }}
+  </div>
+
   <label for="{{ form.victory.id_for_label }}">{% translate "Victory condition" %}</label>
   {{ form.victory }}
   {% if form.victory.errors %}<div class="error">{{ form.victory.errors }}</div>{% endif %}
@@ -34,4 +41,19 @@
 
   <button type="submit" class="primary">{% translate "Start game" %}</button>
 </form>
+{% endblock %}
+{% block scripts %}
+<script>
+  // Only show the computer's options when playing against it.
+  (function () {
+    const options = document.getElementById("ai-options");
+    const radios = document.querySelectorAll('input[name="mode"]');
+    const sync = () => {
+      const checked = document.querySelector('input[name="mode"]:checked');
+      options.hidden = !checked || checked.value !== "ai";
+    };
+    radios.forEach((r) => r.addEventListener("change", sync));
+    sync();
+  })();
+</script>
 {% endblock %}

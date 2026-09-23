@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Rythmomachie\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-23 16:21+0000\n"
+"POT-Creation-Date: 2026-09-23 17:00+0000\n"
 "PO-Revision-Date: 2026-09-23 18:30+0200\n"
 "Last-Translator: 0kenok\n"
 "Language-Team: French\n"
@@ -26,24 +26,66 @@ msgstr "De bonis : prendre des pièces d'une valeur totale"
 msgid "Victoria magna: three pieces in progression in the enemy half"
 msgstr "Victoria magna : trois pièces en progression dans la moitié adverse"
 
-#: forms.py:21
+#: forms.py:17
+msgid "White (you move first)"
+msgstr "Blancs (vous commencez)"
+
+#: forms.py:18 views.py:46
+msgid "Black"
+msgstr "Noirs"
+
+#: forms.py:19
+msgid "Random"
+msgstr "Au hasard"
+
+#: forms.py:24
+msgid "Computer level"
+msgstr "Niveau de l'ordinateur"
+
+#: forms.py:30
+msgid "You play"
+msgstr "Vous jouez"
+
+#: forms.py:36
 msgid ""
 "Pieces (de corpore) or total value (de bonis). Leave empty for the default."
-msgstr "Nombre de pièces (de corpore) ou valeur totale (de bonis). Laissez vide pour la valeur par défaut."
+msgstr ""
+"Nombre de pièces (de corpore) ou valeur totale (de bonis). Laissez vide pour "
+"la valeur par défaut."
 
-#: models.py:18
+#: models.py:19
+msgid "Against the computer"
+msgstr "Contre l'ordinateur"
+
+#: models.py:20
 msgid "Same screen (hot seat)"
 msgstr "Même écran (chacun son tour)"
 
-#: models.py:19
+#: models.py:21
 msgid "Two browsers (share a link)"
 msgstr "Deux navigateurs (partager un lien)"
 
-#: templates/game/base.html:13 templates/game/home.html:16
+#: models.py:24
+msgid "Beginner"
+msgstr "Débutant"
+
+#: models.py:25
+msgid "Easy"
+msgstr "Facile"
+
+#: models.py:26
+msgid "Medium"
+msgstr "Moyen"
+
+#: models.py:27
+msgid "Hard"
+msgstr "Difficile"
+
+#: templates/game/base.html:14 templates/game/home.html:16
 msgid "New game"
 msgstr "Nouvelle partie"
 
-#: templates/game/base.html:14 templates/game/rules.html:3
+#: templates/game/base.html:15 templates/game/rules.html:3
 msgid "Rules"
 msgstr "Règles"
 
@@ -73,25 +115,33 @@ msgstr "Copier"
 
 #: templates/game/game.html:22
 msgid "Keep your own page URL private. It holds your White key."
-msgstr "Ne partagez pas l'adresse de votre propre page : elle contient votre clé des Blancs."
+msgstr ""
+"Ne partagez pas l'adresse de votre propre page : elle contient votre clé des "
+"Blancs."
 
 #: templates/game/game.html:25
 msgid "You are watching this game as a spectator."
 msgstr "Vous regardez cette partie en tant que spectateur."
 
-#: templates/game/game.html:31
+#: templates/game/game.html:28
+#, python-format
+msgid ""
+"You are playing against the computer (level: <strong>%(level)s</strong>)."
+msgstr "Vous jouez contre l'ordinateur (niveau : <strong>%(level)s</strong>)."
+
+#: templates/game/game.html:37
 msgid "Taken by White"
 msgstr "Prises des Blancs"
 
-#: templates/game/game.html:32
+#: templates/game/game.html:38
 msgid "Taken by Black"
 msgstr "Prises des Noirs"
 
-#: templates/game/game.html:37
+#: templates/game/game.html:43
 msgid "Moves"
 msgstr "Coups"
 
-#: templates/game/game.html:41
+#: templates/game/game.html:47
 msgid "Resign"
 msgstr "Abandonner"
 
@@ -104,7 +154,11 @@ msgid ""
 "Rythmomachie (<em>rithmomachia</em>) is a medieval board game of numbers. "
 "White plays the even numbers and Black the odd ones. You capture pieces by "
 "equality, multiplication, addition, or by surrounding them."
-msgstr "La rythmomachie (<em>rithmomachia</em>) est un jeu de plateau médiéval fondé sur les nombres. Les Blancs jouent les nombres pairs, les Noirs les impairs. On prend les pièces par égalité, multiplication, addition, ou en les encerclant."
+msgstr ""
+"La rythmomachie (<em>rithmomachia</em>) est un jeu de plateau médiéval fondé "
+"sur les nombres. Les Blancs jouent les nombres pairs, les Noirs les impairs. "
+"On prend les pièces par égalité, multiplication, addition, ou en les "
+"encerclant."
 
 #: templates/game/home.html:11
 msgid "Read the rules"
@@ -114,192 +168,198 @@ msgstr "Lire les règles"
 msgid "Players"
 msgstr "Joueurs"
 
-#: templates/game/home.html:26
+#: templates/game/home.html:33
 msgid "Victory condition"
 msgstr "Condition de victoire"
 
-#: templates/game/home.html:30
+#: templates/game/home.html:37
 msgid "Target"
 msgstr "Objectif"
 
-#: templates/game/home.html:32
+#: templates/game/home.html:39
 msgid "Defaults: 12 pieces, or a value of 500."
 msgstr "Par défaut : 12 pièces, ou une valeur de 500."
 
-#: templates/game/home.html:35
+#: templates/game/home.html:42
 msgid "Start game"
 msgstr "Commencer la partie"
 
-#: views.py:18
+#: views.py:20
 msgid "The game is over."
 msgstr "La partie est terminée."
 
-#: views.py:19
+#: views.py:21
 msgid "There is no piece on that square."
 msgstr "Il n'y a aucune pièce sur cette case."
 
-#: views.py:20
+#: views.py:22
 msgid "It is not your turn."
 msgstr "Ce n'est pas votre tour."
 
-#: views.py:21
+#: views.py:23
 msgid "That piece cannot move there."
 msgstr "Cette pièce ne peut pas aller là."
 
-#: views.py:43
+#: views.py:45
 msgid "White"
 msgstr "Blancs"
 
-#: views.py:44
-msgid "Black"
-msgstr "Noirs"
-
-#: views.py:45
+#: views.py:47
 msgid "circle"
 msgstr "cercle"
 
-#: views.py:46
+#: views.py:48
 msgid "triangle"
 msgstr "triangle"
 
-#: views.py:47
+#: views.py:49
 msgid "square"
 msgstr "carré"
 
-#: views.py:48
+#: views.py:50
 msgid "pyramid"
 msgstr "pyramide"
 
-#: views.py:49
+#: views.py:51
 #, python-format
 msgid "%(side)s %(shape)s %(value)s"
 msgstr "%(shape)s %(value)s (%(side)s)"
 
-#: views.py:50
+#: views.py:52
 msgid "move here"
 msgstr "aller ici"
 
-#: views.py:51
+#: views.py:53
 #, python-format
 msgid "%(side)s to move"
 msgstr "Aux %(side)s de jouer"
 
-#: views.py:53
+#: views.py:55
 #, python-format
 msgid "%(text)s: %(detail)s"
 msgstr "%(text)s : %(detail)s"
 
-#: views.py:54
+#: views.py:56
 #, python-format
 msgid "%(piece)s: %(from)s → %(to)s"
 msgstr "%(piece)s : %(from)s → %(to)s"
 
-#: views.py:55
+#: views.py:57
 msgid "your turn"
 msgstr "à vous"
 
-#: views.py:56
+#: views.py:58
 msgid "waiting for your opponent…"
 msgstr "en attente de votre adversaire…"
 
-#: views.py:57
+#: views.py:59
 msgid "spectating"
 msgstr "spectateur"
 
-#: views.py:58
+#: views.py:60
 #, python-format
 msgid "%(side)s wins: %(reason)s."
 msgstr "Victoire des %(side)s : %(reason)s."
 
-#: views.py:59
+#: views.py:61
 #, python-format
 msgid "captured %(count)s pieces"
 msgstr "%(count)s pièces prises"
 
-#: views.py:60
+#: views.py:62
 #, python-format
 msgid "captured pieces worth %(total)s"
 msgstr "pièces prises d'une valeur de %(total)s"
 
-#: views.py:61
+#: views.py:63
 #, python-format
 msgid "arithmetic progression %(values)s"
 msgstr "progression arithmétique %(values)s"
 
-#: views.py:62
+#: views.py:64
 #, python-format
 msgid "geometric progression %(values)s"
 msgstr "progression géométrique %(values)s"
 
-#: views.py:63
+#: views.py:65
 #, python-format
 msgid "harmonic progression %(values)s"
 msgstr "progression harmonique %(values)s"
 
-#: views.py:64
+#: views.py:66
 msgid "captured every enemy piece"
 msgstr "toutes les pièces adverses ont été prises"
 
-#: views.py:65
+#: views.py:67
 msgid "the opponent has no legal moves"
 msgstr "l'adversaire n'a plus aucun coup possible"
 
-#: views.py:66
+#: views.py:68
 #, python-format
 msgid "%(side)s resigned"
 msgstr "les %(side)s ont abandonné"
 
-#: views.py:67
+#: views.py:69
 #, python-format
 msgid "First to capture %(target)s pieces. White %(white)s, Black %(black)s."
-msgstr "Le premier à prendre %(target)s pièces l'emporte. Blancs %(white)s, Noirs %(black)s."
+msgstr ""
+"Le premier à prendre %(target)s pièces l'emporte. Blancs %(white)s, Noirs "
+"%(black)s."
 
-#: views.py:68
+#: views.py:70
 #, python-format
 msgid "First to capture %(target)s in value. White %(white)s, Black %(black)s."
-msgstr "Le premier à prendre une valeur de %(target)s l'emporte. Blancs %(white)s, Noirs %(black)s."
+msgstr ""
+"Le premier à prendre une valeur de %(target)s l'emporte. Blancs %(white)s, "
+"Noirs %(black)s."
 
-#: views.py:69
+#: views.py:71
 msgid "Line up three pieces in progression inside the enemy half."
 msgstr "Alignez trois pièces en progression dans la moitié adverse."
 
-#: views.py:70
+#: views.py:72
 #, python-format
 msgid "took %(piece)s by %(rule)s"
 msgstr "prise de %(piece)s par %(rule)s"
 
-#: views.py:71
+#: views.py:73
 msgid "equality"
 msgstr "égalité"
 
-#: views.py:72
+#: views.py:74
 msgid "assault"
 msgstr "assaut"
 
-#: views.py:73
+#: views.py:75
 msgid "ambush"
 msgstr "embuscade"
 
-#: views.py:74
+#: views.py:76
 msgid "siege"
 msgstr "siège"
 
-#: views.py:75
+#: views.py:77
+#, python-format
+msgid "The computer (%(level)s) is thinking…"
+msgstr "L'ordinateur (%(level)s) réfléchit…"
+
+#: views.py:78
 msgid "Resign this game?"
 msgstr "Abandonner cette partie ?"
 
-#: views.py:76
+#: views.py:79
 msgid "Copied"
 msgstr "Copié"
 
-#: views.py:158 views.py:185
+#: views.py:172 views.py:199 views.py:221
 msgid "Invalid JSON."
 msgstr "JSON invalide."
 
-#: views.py:165
+#: views.py:179
 msgid "Expected 'from' and 'to' as [row, col]."
-msgstr "Les champs « from » et « to » doivent être de la forme [ligne, colonne]."
+msgstr ""
+"Les champs « from » et « to » doivent être de la forme [ligne, colonne]."
 
-#: views.py:190
+#: views.py:204 views.py:225
 msgid "You are not playing in this game."
 msgstr "Vous ne jouez pas dans cette partie."

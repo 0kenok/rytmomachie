@@ -275,6 +275,40 @@ def _check_winner(state, side):
     return None
 
 
+def _play(state, piece, to):
+    """Move `piece` (a dict inside `state`) to `to`, resolve captures and
+    victory, and pass the turn. Mutates `state`; returns the captures."""
+    side = piece["side"]
+    piece["r"], piece["c"] = to
+    captures = find_captures(state, side)
+    captured_ids = {enemy["id"] for enemy, _, _ in captures}
+    state["pieces"] = [p for p in state["pieces"] if p["id"] not in captured_ids]
+    for enemy, _, _ in captures:
+        state["captured"][side].append(enemy)
+    reason = _check_winner(state, side)
+    if reason:
+        state["winner"], state["win_reason"] = side, reason
+    else:
+        state["turn"] = other(side)
+    return captures
+
+
+def simulate(state, piece_id, to):
+    """Fast, unvalidated move for search: returns (new_state, captures).
+
+    Pieces and captured lists are copied, the move log is shared and left
+    untouched. Only use with moves taken from legal_moves().
+    """
+    pieces = [dict(p) for p in state["pieces"]]
+    new = {
+        **state,
+        "pieces": pieces,
+        "captured": {side: list(lst) for side, lst in state["captured"].items()},
+    }
+    piece = next(p for p in pieces if p["id"] == piece_id)
+    return new, _play(new, piece, tuple(to))
+
+
 def apply_move(state, frm, to):
     """Return a new state after the side to move plays frm -> to.
 
@@ -285,8 +319,7 @@ def apply_move(state, frm, to):
     frm, to = tuple(frm), tuple(to)
     state = deepcopy(state)
     side = state["turn"]
-    grid = _grid(state)
-    piece = grid.get(frm)
+    piece = _grid(state).get(frm)
     if piece is None:
         raise IllegalMove("empty_square", "no piece on that square")
     if piece["side"] != side:
@@ -294,13 +327,7 @@ def apply_move(state, frm, to):
     if to not in legal_moves(state).get(piece["id"], []):
         raise IllegalMove("illegal_destination", "that piece cannot move there")
 
-    piece["r"], piece["c"] = to
-    captures = find_captures(state, side)
-    captured_ids = {enemy["id"] for enemy, _, _ in captures}
-    state["pieces"] = [p for p in state["pieces"] if p["id"] not in captured_ids]
-    for enemy, _, _ in captures:
-        state["captured"][side].append(enemy)
-
+    captures = _play(state, piece, to)
     state["log"].append({
         "n": len(state["log"]) + 1,
         "side": side,
@@ -313,12 +340,6 @@ def apply_move(state, frm, to):
             for e, rule, detail in captures
         ],
     })
-
-    reason = _check_winner(state, side)
-    if reason:
-        state["winner"], state["win_reason"] = side, reason
-    else:
-        state["turn"] = other(side)
     return state
 
 

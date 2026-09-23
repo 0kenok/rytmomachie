@@ -18,6 +18,8 @@
   let state = null;
   let selected = null; // piece id
   let busy = false;
+  let botPending = false;
+  const BOT_MIN_DELAY_MS = 500; // so the player sees their own move land first
   let flash = "";
 
   const T = cfg.strings;
@@ -172,7 +174,9 @@
       line.appendChild(dot);
       let text = fmt(T.toMove, { side: T[state.turn] });
       const mine = state.your_sides.includes(state.turn);
-      if (state.your_sides.length === 1) {
+      if (botsTurn()) {
+        text = fmt(T.withDetail, { text, detail: fmt(T.botThinking, { level: state.ai.level_name }) });
+      } else if (state.your_sides.length === 1) {
         text = fmt(T.withDetail, { text, detail: mine ? T.yourTurn : T.waiting });
       } else if (!state.your_sides.length) {
         text += ` (${T.spectating})`;
@@ -266,6 +270,30 @@
     if (state && next.version !== state.version) selected = null;
     state = next;
     render();
+    requestBotMove();
+  }
+
+  function botsTurn() {
+    return !!(state && state.ai && !state.winner && state.turn === state.ai.side);
+  }
+
+  async function requestBotMove() {
+    if (botPending || !botsTurn() || !cfg.key) return;
+    botPending = true;
+    try {
+      const [next] = await Promise.all([
+        post(cfg.botUrl, {}),
+        new Promise((resolve) => setTimeout(resolve, BOT_MIN_DELAY_MS)),
+      ]);
+      flash = "";
+      botPending = false;
+      setState(next);
+    } catch (err) {
+      flash = err.message; // the next poll tries again
+      render();
+    } finally {
+      botPending = false;
+    }
   }
 
   async function sendMove(frm, to) {
@@ -283,10 +311,11 @@
   }
 
   async function poll() {
-    if (busy || (state && state.winner)) return;
+    if (busy || botPending || (state && state.winner)) return;
     try {
       const next = await fetchState();
       if (!state || next.version !== state.version) setState(next);
+      else requestBotMove();
     } catch (err) {
       /* transient network errors: try again on the next tick */
     }

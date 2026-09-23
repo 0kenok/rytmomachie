@@ -1,15 +1,17 @@
 import json
+import random
 
 from django.conf import settings
 from django.db import transaction
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
+from django.utils import timezone
 from django.utils.translation import gettext as _
 from django.utils.translation import gettext_lazy
 from django.views.decorators.http import require_GET, require_POST
 
-from . import engine
+from . import ai, engine
 from .forms import NewGameForm
 from .models import Game
 
@@ -72,6 +74,7 @@ def js_strings():
         "rule_assault": _("assault"),
         "rule_ambush": _("ambush"),
         "rule_siege": _("siege"),
+        "botThinking": _("The computer (%(level)s) is thinking…"),
         "resignConfirm": _("Resign this game?"),
         "copied": _("Copied"),
     }
@@ -87,10 +90,14 @@ def create_game(request):
     if not form.is_valid():
         return render(request, "game/home.html", {"form": form}, status=400)
     data = form.cleaned_data
-    game = Game.objects.create(
-        mode=data["mode"],
-        state=engine.new_game(data["victory"], data["target"]),
-    )
+    game = Game(mode=data["mode"], state=engine.new_game(data["victory"], data["target"]))
+    if game.mode == Game.AI:
+        human = data["side"]
+        if human == NewGameForm.RANDOM:
+            human = random.choice([engine.WHITE, engine.BLACK])
+        game.ai_side = engine.other(human)
+        game.ai_level = data["ai_level"]
+    game.save()
     return redirect(f"{reverse('game:play', args=[game.id])}?key={game.white_key}")
 
 
@@ -129,7 +136,14 @@ def _payload(game, sides):
         "target": s["target"],
         "your_sides": sides,
         "legal_moves": {},
+        "ai": None,
     }
+    if game.mode == Game.AI:
+        payload["ai"] = {
+            "side": game.ai_side,
+            "level": game.ai_level,
+            "level_name": str(game.get_ai_level_display()),
+        }
     if s["turn"] in sides and not s["winner"]:
         payload["legal_moves"] = {
             pid: [list(sq) for sq in squares]
@@ -196,4 +210,29 @@ def resign(request, game_id):
             return _illegal(exc)
         game.version += 1
         game.save()
+    return JsonResponse(_payload(game, sides))
+
+
+@require_POST
+def bot_move(request, game_id):
+    """Let the computer play if it is its turn. Safe to call repeatedly."""
+    body = _json_body(request)
+    if not isinstance(body, dict):
+        return _error(_("Invalid JSON."), 400)
+    game = get_object_or_404(Game, pk=game_id)
+    sides = game.sides_for(str(body.get("key", "")))
+    if game.mode != Game.AI or not sides:
+        return _error(_("You are not playing in this game."), 403)
+    state = game.state
+    if state["winner"] or state["turn"] != game.ai_side:
+        return JsonResponse(_payload(game, sides))
+
+    # Think outside any transaction, then save only if nobody changed the game
+    # meanwhile (e.g. the same game open in two tabs).
+    move = ai.choose_move(state, game.ai_level)
+    new_state = engine.apply_move(state, *move)
+    Game.objects.filter(pk=game.pk, version=game.version).update(
+        state=new_state, version=game.version + 1, updated_at=timezone.now()
+    )
+    game.refresh_from_db()  # our move, or whatever the other request saved first
     return JsonResponse(_payload(game, sides))
