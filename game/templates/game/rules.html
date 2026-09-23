@@ -1,0 +1,7 @@
+{% extends "game/base.html" %}
+{% load i18n %}
+{% block title %}{% translate "Rules" %} · Rythmomachie{% endblock %}
+{% block content %}
+{% get_current_language as LANGUAGE_CODE %}
+{% if LANGUAGE_CODE == "fr" %}{% include "game/rules_fr.html" %}{% else %}{% include "game/rules_en.html" %}{% endif %}
+{% endblock %}

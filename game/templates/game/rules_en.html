@@ -1,0 +1,55 @@
+<article class="rules">
+  <h1>Rules</h1>
+  <p>Rythmomachie was played in European monasteries and universities from the
+  11th to the 17th century as a way to practise Boethian number theory. There
+  are many historical rule sets. This one is a simplified modern version.</p>
+
+  <h2>The board and pieces</h2>
+  <p>The board has 8 × 16 squares. Each side has 24 pieces: 8 circles, 8 triangles,
+  7 squares and a pyramid. White's numbers are built from the evens 2, 4, 6, 8
+  and Black's from the odds 3, 5, 7, 9. White moves first.</p>
+  <ul>
+    <li><strong>White pyramid (91)</strong> is made of 36 + 25 + 16 + 9 + 4 + 1.</li>
+    <li><strong>Black pyramid (190)</strong> is made of 64 + 49 + 36 + 25 + 16.</li>
+  </ul>
+
+  <h2>Movement</h2>
+  <p>A piece may only move to an empty square. It cannot jump over other pieces.</p>
+  <table>
+    <tr><th>Piece</th><th>Move</th></tr>
+    <tr><td>Circle</td><td>1 square diagonally</td></tr>
+    <tr><td>Triangle</td><td>exactly 2 squares in a straight line (not diagonally)</td></tr>
+    <tr><td>Square</td><td>exactly 3 squares in a straight line (not diagonally)</td></tr>
+    <tr><td>Pyramid</td><td>like a circle, a triangle or a square</td></tr>
+  </table>
+
+  <h2>Capturing</h2>
+  <p>Captures are not made by moving onto a piece. After each move, the game
+  removes every enemy piece that the moving player's pieces now attack. The
+  capturing pieces stay where they are.</p>
+  <dl>
+    <dt>Equality</dt>
+    <dd>One of your pieces could move onto the enemy's square, and both have the same value.</dd>
+    <dt>Assault (multiplication)</dt>
+    <dd>One of your pieces is in a straight line (including diagonals) with the enemy, with
+    <em>n</em> empty squares between them, and <em>your value × n = enemy value</em>.</dd>
+    <dt>Ambush (addition)</dt>
+    <dd>Two of your pieces could both move onto the enemy's square, and their values add up to the enemy's value.</dd>
+    <dt>Siege</dt>
+    <dd>Every square directly above, below, left and right of the enemy piece
+    holds one of your pieces. The edge of the board counts as blocked.</dd>
+  </dl>
+  <p>A pyramid counts as one piece. Its value is the sum of its layers.</p>
+
+  <h2>Winning</h2>
+  <p>You choose the victory condition when you create a game:</p>
+  <ul>
+    <li><strong>De corpore</strong>: capture a set number of pieces (default 12).</li>
+    <li><strong>De bonis</strong>: capture pieces whose values add up to a target (default 500).</li>
+    <li><strong>Victoria magna</strong>: place three of your pieces next to each other in a
+    line, inside the enemy's half of the board, so that their values form an
+    arithmetic (2, 4, 6), geometric (4, 16, 64) or harmonic (3, 4, 6) progression.</li>
+  </ul>
+  <p>You also win if you capture every enemy piece, if your opponent has no legal
+  move left, or if your opponent resigns.</p>
+</article>

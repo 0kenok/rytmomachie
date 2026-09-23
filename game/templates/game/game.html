@@ -1,0 +1,61 @@
+{% extends "game/base.html" %}
+{% load static i18n %}
+{% block title %}{% translate "Game" %} · Rythmomachie{% endblock %}
+{% block main_class %}page wide{% endblock %}
+{% block content %}
+<div class="game-layout">
+  <div class="board-wrap">
+    <div id="board" class="board" aria-label="{% translate 'Game board' %}"></div>
+  </div>
+
+  <aside class="side-panel">
+    <div id="status" class="card status">{% translate "Loading…" %}</div>
+
+    {% if invite_url %}
+    <div class="card invite">
+      <strong>{% translate "Invite your opponent" %}</strong>
+      <p>{% translate "Send this link to the person playing Black:" %}</p>
+      <div class="copy-row">
+        <input id="invite" type="text" readonly value="{{ invite_url }}">
+        <button type="button" id="copy-invite">{% translate "Copy" %}</button>
+      </div>
+      <p class="help">{% translate "Keep your own page URL private. It holds your White key." %}</p>
+    </div>
+    {% elif not sides %}
+    <div class="card"><p>{% translate "You are watching this game as a spectator." %}</p></div>
+    {% endif %}
+
+    <div class="card">
+      <div id="goal" class="goal"></div>
+      <div class="captured">
+        <div><h3>{% translate "Taken by White" %}</h3><div id="cap-white" class="cap-list"></div></div>
+        <div><h3>{% translate "Taken by Black" %}</h3><div id="cap-black" class="cap-list"></div></div>
+      </div>
+    </div>
+
+    <div class="card log-card">
+      <h3>{% translate "Moves" %}</h3>
+      <ol id="log" class="log"></ol>
+    </div>
+
+    {% if sides %}<button type="button" id="resign" class="danger">{% translate "Resign" %}</button>{% endif %}
+  </aside>
+</div>
+{{ key|json_script:"game-key" }}
+{{ js_strings|json_script:"game-strings" }}
+{% endblock %}
+{% block scripts %}
+<script>
+  window.RYTHMO = {
+    stateUrl: "{% url 'game:state' game.id %}",
+    moveUrl: "{% url 'game:move' game.id %}",
+    resignUrl: "{% url 'game:resign' game.id %}",
+    csrfToken: "{{ csrf_token }}",
+    key: JSON.parse(document.getElementById("game-key").textContent),
+    strings: JSON.parse(document.getElementById("game-strings").textContent),
+    rows: {{ rows }},
+    cols: {{ cols }},
+  };
+</script>
+<script src="{% static 'game/board.js' %}"></script>
+{% endblock %}

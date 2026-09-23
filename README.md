@@ -1,3 +1,59 @@
 # Rythmomachie
 
-Rythmomachy (*rithmomachia*), the medieval "philosophers' game" of numbers.
+Rythmomachy (*rithmomachia*), the medieval "philosophers' game" of numbers, as a
+Django web app. White plays the even numbers and Black the odd ones. You capture
+pieces by equality, multiplication, addition or by surrounding them.
+
+## Run it
+
+```bash
+python3 -m venv .venv
+.venv/bin/pip install -r requirements.txt
+.venv/bin/python manage.py migrate
+.venv/bin/python manage.py runserver
+```
+
+Then open http://127.0.0.1:8000/ and start a game:
+
+- **Same screen**: both players share one browser and take turns.
+- **Two browsers**: you play White and get an invite link to send to the
+  person playing Black. Each page updates every 2 seconds. Anyone who opens the
+  game URL without a key can watch as a spectator.
+
+The rules are at `/rules/`.
+
+## Tests
+
+```bash
+.venv/bin/python manage.py test game
+```
+
+## Layout
+
+- `game/engine.py`: the rules engine (movement, captures, victory). It is plain
+  Python, and the game state is a JSON dict stored in `Game.state`.
+- `game/views.py`: HTML pages plus a small JSON API (`state/`, `move/`, `resign/`).
+- `game/static/game/board.js`: draws the board and handles clicks and polling.
+
+## Languages
+
+The app is available in English and French. On their first visit, people choose
+a language, and they can switch at any time with the EN / FR buttons in the
+header. Translations are in `locale/fr/LC_MESSAGES/django.po`, and the rules page
+has one template per language (`rules_en.html`, `rules_fr.html`). After editing
+the `.po` file, recompile it:
+
+```bash
+cd game && ../.venv/bin/python ../manage.py makemessages -l fr   # pick up new strings
+cd .. && .venv/bin/python manage.py compilemessages --ignore=.venv
+```
+
+## Configuration
+
+Set these environment variables when you deploy:
+
+| Variable | Default |
+| --- | --- |
+| `DJANGO_SECRET_KEY` | insecure development key |
+| `DJANGO_DEBUG` | `1` (set to `0` in production) |
+| `DJANGO_ALLOWED_HOSTS` | `localhost,127.0.0.1` |

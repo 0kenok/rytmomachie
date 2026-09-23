@@ -21,3 +21,7 @@ venv/
 
 # Logs
 *.log
+
+# Django
+db.sqlite3
+staticfiles/

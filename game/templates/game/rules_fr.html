@@ -1,0 +1,62 @@
+<article class="rules">
+  <h1>Règles</h1>
+  <p>La rythmomachie se jouait dans les monastères et les universités d'Europe du
+  XI<sup>e</sup> au XVII<sup>e</sup> siècle pour s'exercer à la théorie des nombres
+  de Boèce. Il en existe de nombreuses variantes historiques ; celle-ci est une
+  version moderne simplifiée.</p>
+
+  <h2>Le plateau et les pièces</h2>
+  <p>Le plateau compte 8 × 16 cases. Chaque camp dispose de 24 pièces : 8 cercles,
+  8 triangles, 7 carrés et une pyramide. Les nombres des Blancs sont construits à
+  partir des pairs 2, 4, 6, 8, ceux des Noirs à partir des impairs 3, 5, 7, 9. Les
+  Blancs jouent en premier.</p>
+  <ul>
+    <li><strong>Pyramide blanche (91)</strong> : 36 + 25 + 16 + 9 + 4 + 1.</li>
+    <li><strong>Pyramide noire (190)</strong> : 64 + 49 + 36 + 25 + 16.</li>
+  </ul>
+
+  <h2>Déplacements</h2>
+  <p>Une pièce ne peut se déplacer que vers une case vide, et ne peut pas sauter
+  par-dessus d'autres pièces.</p>
+  <table>
+    <tr><th>Pièce</th><th>Déplacement</th></tr>
+    <tr><td>Cercle</td><td>1 case en diagonale</td></tr>
+    <tr><td>Triangle</td><td>exactement 2 cases en ligne droite (pas en diagonale)</td></tr>
+    <tr><td>Carré</td><td>exactement 3 cases en ligne droite (pas en diagonale)</td></tr>
+    <tr><td>Pyramide</td><td>comme un cercle, un triangle ou un carré</td></tr>
+  </table>
+
+  <h2>Prises</h2>
+  <p>On ne prend pas une pièce en se posant dessus. Après chaque coup, le jeu
+  retire toutes les pièces adverses que les pièces du joueur qui vient de jouer
+  attaquent désormais. Les pièces qui prennent restent à leur place.</p>
+  <dl>
+    <dt>Égalité</dt>
+    <dd>Une de vos pièces pourrait se déplacer sur la case de la pièce adverse, et
+    les deux ont la même valeur.</dd>
+    <dt>Assaut (multiplication)</dt>
+    <dd>Une de vos pièces est alignée avec la pièce adverse (diagonales comprises),
+    avec <em>n</em> cases vides entre elles, et <em>votre valeur × n = valeur adverse</em>.</dd>
+    <dt>Embuscade (addition)</dt>
+    <dd>Deux de vos pièces pourraient chacune se déplacer sur la case de la pièce
+    adverse, et la somme de leurs valeurs est égale à la sienne.</dd>
+    <dt>Siège</dt>
+    <dd>Chaque case directement au-dessus, en dessous, à gauche et à droite de la
+    pièce adverse est occupée par l'une de vos pièces. Le bord du plateau compte
+    comme bloqué.</dd>
+  </dl>
+  <p>Une pyramide compte comme une seule pièce. Sa valeur est la somme de ses étages.</p>
+
+  <h2>Victoire</h2>
+  <p>La condition de victoire se choisit à la création de la partie :</p>
+  <ul>
+    <li><strong>De corpore</strong> : prendre un certain nombre de pièces (12 par défaut).</li>
+    <li><strong>De bonis</strong> : prendre des pièces dont la somme des valeurs atteint un
+    objectif (500 par défaut).</li>
+    <li><strong>Victoria magna</strong> : placer trois de vos pièces côte à côte en ligne,
+    dans la moitié adverse du plateau, de sorte que leurs valeurs forment une
+    progression arithmétique (2, 4, 6), géométrique (4, 16, 64) ou harmonique (3, 4, 6).</li>
+  </ul>
+  <p>Vous gagnez aussi si vous prenez toutes les pièces adverses, si votre adversaire
+  n'a plus aucun coup possible, ou s'il abandonne.</p>
+</article>

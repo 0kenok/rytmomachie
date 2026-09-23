@@ -1,0 +1,37 @@
+{% extends "game/base.html" %}
+{% load i18n %}
+{% block content %}
+<section class="intro">
+  <h1>{% translate "The philosophers' game" %}</h1>
+  <p>{% blocktranslate trimmed %}
+    Rythmomachie (<em>rithmomachia</em>) is a medieval board game of numbers.
+    White plays the even numbers and Black the odd ones. You capture pieces by
+    equality, multiplication, addition, or by surrounding them.
+  {% endblocktranslate %}
+  <a href="{% url 'game:rules' %}">{% translate "Read the rules" %}</a>.</p>
+</section>
+
+<form class="card new-game" method="post" action="{% url 'game:create' %}">
+  {% csrf_token %}
+  <h2>{% translate "New game" %}</h2>
+  {% if form.non_field_errors %}<div class="error">{{ form.non_field_errors }}</div>{% endif %}
+
+  <fieldset>
+    <legend>{% translate "Players" %}</legend>
+    {% for radio in form.mode %}
+      <label class="radio">{{ radio.tag }} {{ radio.choice_label }}</label>
+    {% endfor %}
+  </fieldset>
+
+  <label for="{{ form.victory.id_for_label }}">{% translate "Victory condition" %}</label>
+  {{ form.victory }}
+  {% if form.victory.errors %}<div class="error">{{ form.victory.errors }}</div>{% endif %}
+
+  <label for="{{ form.target.id_for_label }}">{% translate "Target" %}</label>
+  {{ form.target }}
+  <small class="help">{{ form.target.help_text }} {% translate "Defaults: 12 pieces, or a value of 500." %}</small>
+  {% if form.target.errors %}<div class="error">{{ form.target.errors }}</div>{% endif %}
+
+  <button type="submit" class="primary">{% translate "Start game" %}</button>
+</form>
+{% endblock %}

@@ -1,0 +1,24 @@
+{% extends "game/base.html" %}
+{% block nav %}{% endblock %}
+{% block content %}
+<section class="choose-language">
+  <h1>Rythmomachie</h1>
+  <p class="bilingual">
+    <span lang="fr">Choisissez votre langue</span>
+    <span aria-hidden="true">·</span>
+    <span lang="en">Choose your language</span>
+  </p>
+  <form action="{% url 'set_language' %}" method="post" class="language-options">
+    {% csrf_token %}
+    <input type="hidden" name="next" value="{% url 'game:home' %}">
+    <button type="submit" name="language" value="fr" lang="fr" class="language-option">
+      <span class="lang-code">FR</span>
+      <span class="lang-name">Français</span>
+    </button>
+    <button type="submit" name="language" value="en" lang="en" class="language-option">
+      <span class="lang-code">EN</span>
+      <span class="lang-name">English</span>
+    </button>
+  </form>
+</section>
+{% endblock %}
