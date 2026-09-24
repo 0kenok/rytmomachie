@@ -1,0 +1,41 @@
+{% extends "game/base.html" %}
+{% load i18n %}
+{% block title %}{% translate "Tutorial" %} · Rythmomachie{% endblock %}
+{% block content %}
+<section class="intro">
+  <h1>{% translate "Learn to play" %}</h1>
+  <p>{% blocktranslate trimmed %}
+    Short interactive lessons, from moving your first piece to winning a game.
+    Each lesson sets up a position on the board and gives you one goal.
+  {% endblocktranslate %}</p>
+  <div class="progress" role="progressbar" aria-valuemin="0" aria-valuemax="{{ total }}" aria-valuenow="{{ done_count }}">
+    <div class="progress-bar" style="width: {% widthratio done_count total 100 %}%"></div>
+  </div>
+  <p class="help">{% blocktranslate trimmed %}{{ done_count }} of {{ total }} lessons completed{% endblocktranslate %}</p>
+  {% if next_up %}
+    <a class="button primary" href="{% url 'game:lesson' next_up.slug %}">
+      {% if done_count %}{% translate "Continue" %}{% else %}{% translate "Start the first lesson" %}{% endif %}
+    </a>
+  {% else %}
+    <p><strong>{% translate "You have completed every lesson!" %}</strong></p>
+    <a class="button primary" href="{% url 'game:home' %}">{% translate "Play against the computer" %}</a>
+  {% endif %}
+</section>
+
+{% for chapter in chapters %}
+<section class="chapter">
+  <h2>{{ chapter.title }}</h2>
+  <ol class="lesson-list">
+    {% for item in chapter.lessons %}
+    <li>
+      <a href="{% url 'game:lesson' item.lesson.slug %}" class="lesson-link{% if item.done %} done{% endif %}">
+        <span class="lesson-number" aria-hidden="true">{% if item.done %}✓{% else %}{{ item.number }}{% endif %}</span>
+        <span class="lesson-title">{{ item.lesson.title }}</span>
+        {% if item.done %}<span class="visually-hidden">({% translate "completed" %})</span>{% endif %}
+      </a>
+    </li>
+    {% endfor %}
+  </ol>
+</section>
+{% endfor %}
+{% endblock %}

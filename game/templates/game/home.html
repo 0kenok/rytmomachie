@@ -11,6 +11,12 @@
   <a href="{% url 'game:rules' %}">{% translate "Read the rules" %}</a>.</p>
 </section>
 
+<a class="card tutorial-callout" href="{% url 'game:tutorial' %}">
+  <strong>{% translate "New to the game?" %}</strong>
+  <span>{% translate "Learn step by step with the interactive tutorial: eleven short lessons, from your first move to your first victory." %}</span>
+  <span class="callout-arrow" aria-hidden="true">→</span>
+</a>
+
 <form class="card new-game" method="post" action="{% url 'game:create' %}">
   {% csrf_token %}
   <h2>{% translate "New game" %}</h2>

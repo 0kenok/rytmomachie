@@ -1,0 +1,90 @@
+{% extends "game/base.html" %}
+{% load static i18n %}
+{% block title %}{{ lesson.title }} · {% translate "Tutorial" %} · Rythmomachie{% endblock %}
+{% block main_class %}page wide{% endblock %}
+{% block content %}
+<div class="game-layout">
+  <div class="board-wrap">
+    <div id="board" class="board" aria-label="{% translate 'Game board' %}"></div>
+  </div>
+
+  <aside class="side-panel">
+    <div class="card lesson-card">
+      <p class="lesson-kicker">
+        <a href="{% url 'game:tutorial' %}">{% translate "Tutorial" %}</a>
+        · {{ lesson.chapter }} · {% blocktranslate %}Lesson {{ number }} of {{ total }}{% endblocktranslate %}
+      </p>
+      <h1>{{ lesson.title }}</h1>
+      <p>{{ lesson.text }}</p>
+      <div class="lesson-goal">
+        <strong>{% translate "Goal" %}</strong>
+        <p>{{ lesson.goal_text }}</p>
+      </div>
+
+      <div id="lesson-playing" class="lesson-status">
+        {% translate "Moves left:" %} <strong id="moves-left">{{ lesson.max_moves }}</strong>
+      </div>
+      <div id="lesson-success" class="lesson-status success" hidden>
+        <strong>{% translate "Well done!" %}</strong> {% translate "Lesson completed." %}
+      </div>
+      <div id="lesson-failed" class="lesson-status failed" hidden>
+        <strong>{% translate "Not quite." %}</strong> {% translate "Restart the lesson and try again." %}
+      </div>
+
+      <details class="hint">
+        <summary>{% translate "Show a hint" %}</summary>
+        <p>{{ lesson.hint }}</p>
+      </details>
+
+      <div class="lesson-actions">
+        <button type="button" id="restart">{% translate "Restart" %}</button>
+        {% if next_lesson %}
+          <a id="next" class="button primary" href="{% url 'game:lesson' next_lesson.slug %}">{% translate "Next lesson" %} →</a>
+        {% else %}
+          <a id="next" class="button primary" href="{% url 'game:home' %}">{% translate "Play a real game" %} →</a>
+        {% endif %}
+      </div>
+    </div>
+
+    <div id="status" class="card status">{% translate "Loading…" %}</div>
+
+    <div class="card log-card">
+      <h3>{% translate "Moves" %}</h3>
+      <ol id="log" class="log"></ol>
+    </div>
+  </aside>
+</div>
+{{ js_strings|json_script:"game-strings" }}
+{% endblock %}
+{% block scripts %}
+<script>
+  window.RYTHMO = {
+    stateUrl: "{% url 'game:lesson_state' lesson.slug %}",
+    moveUrl: "{% url 'game:lesson_move' lesson.slug %}",
+    resetUrl: "{% url 'game:lesson_reset' lesson.slug %}",
+    csrfToken: "{{ csrf_token }}",
+    key: "",
+    strings: JSON.parse(document.getElementById("game-strings").textContent),
+    rows: {{ rows }},
+    cols: {{ cols }},
+    pollMs: 0,
+    onState(state) {
+      const status = state.lesson.status;
+      document.getElementById("moves-left").textContent = state.lesson.moves_left;
+      document.getElementById("lesson-playing").hidden = status !== "playing";
+      document.getElementById("lesson-success").hidden = status !== "success";
+      document.getElementById("lesson-failed").hidden = status !== "failed";
+      document.getElementById("next").classList.toggle("primary", status === "success");
+      document.getElementById("status").hidden = status !== "playing";
+    },
+  };
+  document.getElementById("restart").addEventListener("click", async () => {
+    const res = await fetch(window.RYTHMO.resetUrl, {
+      method: "POST",
+      headers: { "X-CSRFToken": window.RYTHMO.csrfToken },
+    });
+    if (res.ok) window.RYTHMO.setState(await res.json());
+  });
+</script>
+<script src="{% static 'game/board.js' %}"></script>
+{% endblock %}

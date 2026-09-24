@@ -5,7 +5,7 @@
   const ROWS = cfg.rows;
   const COLS = cfg.cols;
   const FILES = "abcdefgh";
-  const POLL_MS = 2000;
+  const POLL_MS = cfg.pollMs === undefined ? 2000 : cfg.pollMs;
 
   const boardEl = document.getElementById("board");
   const statusEl = document.getElementById("status");
@@ -124,6 +124,7 @@
     const targets = new Set(selected && moves[selected] ? moves[selected].map(([r, c]) => `${r},${c}`) : []);
     const last = state.log.length ? state.log[state.log.length - 1] : null;
     const lastSquares = new Set(last ? [last.from.join(","), last.to.join(",")] : []);
+    const goalSquares = new Set((state.highlights || []).map(([r, c]) => `${r},${c}`));
 
     const cells = new Array(across * down);
     for (let r = 0; r < ROWS; r++) {
@@ -138,6 +139,7 @@
         if (horizontal && x === ROWS / 2) el.classList.add("half-a");
         if (!horizontal && y === ROWS / 2) el.classList.add("half-b");
         if (lastSquares.has(key)) el.classList.add("last");
+        if (goalSquares.has(key)) el.classList.add("goal-square");
 
         const p = byPos.get(key);
         let label = sq(r, c);
@@ -205,6 +207,7 @@
   }
 
   function renderGoal() {
+    if (!goalEl) return;
     const w = state.captured.white;
     const b = state.captured.black;
     const sum = (list) => list.reduce((a, p) => a + p.value, 0);
@@ -216,6 +219,7 @@
 
   function renderCaptured() {
     for (const [el, list] of [[capWhiteEl, state.captured.white], [capBlackEl, state.captured.black]]) {
+      if (!el) continue;
       el.textContent = "";
       for (const p of list) {
         const chip = document.createElement("span");
@@ -271,7 +275,15 @@
     state = next;
     render();
     requestBotMove();
+    if (cfg.onState) cfg.onState(state);
   }
+
+  // Lets the page replace the state, e.g. after restarting a tutorial lesson.
+  cfg.setState = (next) => {
+    selected = null;
+    flash = "";
+    setState(next);
+  };
 
   function botsTurn() {
     return !!(state && state.ai && !state.winner && state.turn === state.ai.side);
@@ -389,5 +401,5 @@
   });
 
   poll();
-  setInterval(poll, POLL_MS);
+  if (POLL_MS) setInterval(poll, POLL_MS);
 })();

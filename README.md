@@ -23,7 +23,9 @@ Then open http://127.0.0.1:8000/ and start a game:
   person playing Black. Each page updates every 2 seconds. Anyone who opens the
   game URL without a key can watch as a spectator.
 
-The rules are at `/rules/`.
+The rules are at `/rules/`. New players can start with the interactive tutorial
+at `/tutorial/`: eleven short lessons, from moving a circle to winning a small
+game against the computer. Progress is kept in the browser session.
 
 ## Tests
 
@@ -36,6 +38,8 @@ The rules are at `/rules/`.
 - `game/engine.py`: the rules engine (movement, captures, victory). It is plain
   Python, and the game state is a JSON dict stored in `Game.state`.
 - `game/ai.py`: the computer opponent.
+- `game/tutorial.py`: the tutorial lessons (positions, goals, hints). To add a
+  lesson, append a `Lesson` with a `solution`; the tests check it can be solved.
 - `game/views.py`: HTML pages plus a small JSON API (`state/`, `move/`, `resign/`).
 - `game/static/game/board.js`: draws the board and handles clicks and polling.
 

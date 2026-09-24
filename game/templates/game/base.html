@@ -12,6 +12,7 @@
     {% block nav %}
     <nav>
       <a href="{% url 'game:home' %}">{% translate "New game" %}</a>
+      <a href="{% url 'game:tutorial' %}">{% translate "Tutorial" %}</a>
       <a href="{% url 'game:rules' %}">{% translate "Rules" %}</a>
       <form class="lang-switch" action="{% url 'set_language' %}" method="post">
         {% csrf_token %}
