@@ -35,9 +35,9 @@ class _Timeout(Exception):
     pass
 
 
-def worth(piece, victory):
-    """How much a piece matters, depending on how the game is won."""
-    if victory == engine.VICTORY_GOODS:
+def worth(piece, victories):
+    """How much a piece matters, depending on how the game can be won."""
+    if engine.VICTORY_GOODS in victories:
         base = 20 + piece["value"]
     else:
         base = 100 + 4 * math.sqrt(piece["value"])
@@ -53,29 +53,29 @@ def _advance(piece):
 
 def evaluate(state, side):
     """Static score of `state` from the point of view of `side`, who is to move."""
-    victory = state["victory"]
-    progression = victory == engine.VICTORY_PROGRESSION
+    enabled = engine.victories(state)
+    progression = engine.VICTORY_PROGRESSION in enabled
     advance_weight = 5 if progression else 1
     score = 0.0
     for p in state["pieces"]:
-        value = worth(p, victory) + advance_weight * _advance(p)
+        value = worth(p, enabled) + advance_weight * _advance(p)
         if progression and _advance(p) >= engine.ROWS // 2:
             value += 15
         score += value if p["side"] == side else -value
     # Enemy pieces we attack right now fall on our next move whatever we play.
     for enemy, _, _ in engine.find_captures(state, side):
-        score += 0.9 * worth(enemy, victory)
+        score += 0.9 * worth(enemy, enabled)
     return score
 
 
 def _children(state):
     """(gain, piece_id, square, child_state) for every legal move, captures first."""
-    victory = state["victory"]
+    enabled = engine.victories(state)
     out = []
     for pid, squares in engine.legal_moves(state).items():
         for sq in squares:
             child, captures = engine.simulate(state, pid, sq)
-            gain = sum(worth(e, victory) for e, _, _ in captures)
+            gain = sum(worth(e, enabled) for e, _, _ in captures)
             if child["winner"]:
                 gain += WIN
             out.append((gain, pid, sq, child))

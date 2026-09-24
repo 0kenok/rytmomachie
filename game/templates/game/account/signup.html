@@ -1,0 +1,16 @@
+{% extends "game/base.html" %}
+{% load i18n %}
+{% block title %}{% translate "Sign up" %} · Rythmomachie{% endblock %}
+{% block content %}
+<form class="card auth-form" method="post" action="{% url 'game:signup' %}">
+  <h1>{% translate "Create an account" %}</h1>
+  <p>{% blocktranslate trimmed %}
+    An account keeps your games and your tutorial progress, so you can find them
+    again on any device. You can still play without one.
+  {% endblocktranslate %}</p>
+  {% include "game/account/_form.html" %}
+  <button type="submit" class="primary">{% translate "Sign up" %}</button>
+  <p class="help">{% translate "Already have an account?" %}
+    <a href="{% url 'game:login' %}{% if next %}?next={{ next|urlencode }}{% endif %}">{% translate "Log in" %}</a></p>
+</form>
+{% endblock %}

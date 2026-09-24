@@ -66,6 +66,7 @@ def js_strings():
         "reason_annihilation": _("captured every enemy piece"),
         "reason_no_moves": _("the opponent has no legal moves"),
         "reason_resigned": _("%(side)s resigned"),
+        "goal_any": _("Several ways to win; the first one reached counts:"),
         "goal_body": _("First to capture %(target)s pieces. White %(white)s, Black %(black)s."),
         "goal_goods": _("First to capture %(target)s in value. White %(white)s, Black %(black)s."),
         "goal_progression": _("Line up three pieces in progression inside the enemy half."),
@@ -90,21 +91,35 @@ def create_game(request):
     if not form.is_valid():
         return render(request, "game/home.html", {"form": form}, status=400)
     data = form.cleaned_data
-    game = Game(mode=data["mode"], state=engine.new_game(data["victory"], data["target"]))
+    game = Game(mode=data["mode"], state=engine.new_game(victories=data["victory_targets"]))
+    player = request.user if request.user.is_authenticated else None
+    game.white_player = player
     if game.mode == Game.AI:
         human = data["side"]
         if human == NewGameForm.RANDOM:
             human = random.choice([engine.WHITE, engine.BLACK])
         game.ai_side = engine.other(human)
         game.ai_level = data["ai_level"]
+        if human == engine.BLACK:
+            game.white_player, game.black_player = None, player
     game.save()
     return redirect(f"{reverse('game:play', args=[game.id])}?key={game.white_key}")
 
 
 def play(request, game_id):
     game = get_object_or_404(Game, pk=game_id)
-    key = request.GET.get("key", "")
+    key = request.GET.get("key", "") or game.key_for(request.user)
     sides = game.sides_for(key)
+    # A logged-in player opening the invite link joins the game as Black.
+    if (
+        game.mode == Game.ONLINE
+        and sides == [engine.BLACK]
+        and request.user.is_authenticated
+        and game.black_player_id is None
+        and game.white_player_id != request.user.pk
+    ):
+        game.black_player = request.user
+        game.save(update_fields=["black_player"])
     invite_url = None
     if game.mode == Game.ONLINE and engine.WHITE in sides:
         invite_url = request.build_absolute_uri(
@@ -132,8 +147,7 @@ def _payload(game, sides):
         "winner": s["winner"],
         "win_reason": s["win_reason"],
         "log": s["log"],
-        "victory": s["victory"],
-        "target": s["target"],
+        "victories": engine.victories(s),
         "your_sides": sides,
         "legal_moves": {},
         "ai": None,

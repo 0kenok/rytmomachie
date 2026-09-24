@@ -47,6 +47,7 @@ VICTORY_DEFAULT_TARGET = {
     VICTORY_GOODS: 500,
     VICTORY_PROGRESSION: 0,
 }
+VICTORY_TYPES = list(VICTORY_DEFAULT_TARGET)  # also the order they are checked in
 
 # (row, [(col, shape, value), ...]) — pyramid values are the sum of its layers.
 WHITE_SETUP = [
@@ -87,11 +88,25 @@ def on_board(r, c):
     return 0 <= r < ROWS and 0 <= c < COLS
 
 
-def new_game(victory=VICTORY_BODY, target=None):
-    if victory not in VICTORY_DEFAULT_TARGET:
-        raise ValueError(f"unknown victory type: {victory}")
-    if target is None:
-        target = VICTORY_DEFAULT_TARGET[victory]
+def new_game(victory=VICTORY_BODY, target=None, victories=None):
+    """A fresh game.
+
+    `victories` maps each enabled victory type to its target (None for the
+    default), e.g. {"body": 10, "progression": None}; the first one reached
+    wins. Without it, the single `victory` / `target` pair is used.
+    """
+    if victories is None:
+        victories = {victory: target}
+    if not victories:
+        raise ValueError("at least one victory type is required")
+    for kind in victories:
+        if kind not in VICTORY_DEFAULT_TARGET:
+            raise ValueError(f"unknown victory type: {kind}")
+    victories = {
+        kind: VICTORY_DEFAULT_TARGET[kind] if victories[kind] is None else victories[kind]
+        for kind in VICTORY_TYPES
+        if kind in victories
+    }
     pieces = []
     for side, setup in ((WHITE, WHITE_SETUP), (BLACK, BLACK_SETUP)):
         for row, entries in setup:
@@ -114,9 +129,16 @@ def new_game(victory=VICTORY_BODY, target=None):
         "winner": None,
         "win_reason": None,
         "log": [],
-        "victory": victory,
-        "target": target,
+        "victories": victories,
     }
+
+
+def victories(state):
+    """{victory type: target} for a state. Games saved before victory types
+    could be combined store a single "victory" and "target" instead."""
+    if "victories" in state:
+        return state["victories"]
+    return {state["victory"]: state["target"]}
 
 
 def _grid(state):
@@ -256,14 +278,14 @@ def find_progression(state, side):
 def _check_winner(state, side):
     """Why `side` has won, as {"code": ..., **params}, or None."""
     captured = state["captured"][side]
-    victory, target = state["victory"], state["target"]
-    if victory == VICTORY_BODY and len(captured) >= target:
+    enabled = victories(state)
+    if VICTORY_BODY in enabled and len(captured) >= enabled[VICTORY_BODY]:
         return {"code": VICTORY_BODY, "count": len(captured)}
-    if victory == VICTORY_GOODS:
+    if VICTORY_GOODS in enabled:
         total = sum(p["value"] for p in captured)
-        if total >= target:
+        if total >= enabled[VICTORY_GOODS]:
             return {"code": VICTORY_GOODS, "total": total}
-    if victory == VICTORY_PROGRESSION:
+    if VICTORY_PROGRESSION in enabled:
         found = find_progression(state, side)
         if found:
             kind, values = found

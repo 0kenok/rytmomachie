@@ -268,3 +268,71 @@ a.button.primary { background: var(--accent); color: var(--accent-text); border-
 .hint summary { cursor: pointer; color: var(--accent); }
 .hint p { margin: 6px 0 0; color: var(--muted); }
 .lesson-actions { display: flex; flex-wrap: wrap; gap: 8px; justify-content: space-between; margin-top: 14px; }
+
+/* ---- Accounts ---- */
+a.button.small { padding: 3px 10px; font-size: .9rem; }
+.account-link { font-weight: bold; }
+
+.messages { list-style: none; padding: 0; margin: 0 0 16px; display: grid; gap: 8px; }
+.message { padding: 10px 14px; border-left: 4px solid var(--accent); }
+.message.error { border-left-color: var(--danger); }
+
+.auth-form { max-width: 420px; margin: 0 auto; display: grid; gap: 12px; }
+.auth-form h1 { margin: 0; font-size: 1.5rem; }
+.auth-form p { margin: 0; }
+.auth-form .field { display: grid; gap: 4px; }
+.auth-form label { font-weight: bold; }
+.auth-form input {
+  font: inherit; padding: 8px; border-radius: 6px;
+  border: 1px solid var(--border); background: var(--bg); color: var(--text);
+}
+.auth-form .help ul { margin: 4px 0 0; padding-left: 18px; }
+
+.account-head { display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 12px; }
+.account-head h1 { margin: 0 0 4px; }
+.account-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+
+.stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 12px; margin: 20px 0; }
+.stat { display: flex; flex-direction: column; align-items: center; text-decoration: none; color: var(--text); }
+.stat-value { font-size: 1.8rem; font-weight: bold; color: var(--accent); font-family: system-ui, sans-serif; }
+.stat-label { color: var(--muted); font-size: .9rem; }
+a.stat:hover { border-color: var(--accent); }
+
+.section-head { display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+.table-wrap { overflow-x: auto; }
+table.games { width: 100%; border-collapse: collapse; font-size: .95rem; }
+table.games th, table.games td { text-align: left; padding: 8px 10px; border-bottom: 1px solid var(--border); white-space: nowrap; }
+table.games th { color: var(--muted); font-weight: normal; font-size: .85rem; }
+.badge {
+  font-family: system-ui, sans-serif; font-size: .75rem; font-weight: 600; padding: 2px 8px;
+  border-radius: 10px; border: 1px solid var(--border); color: var(--muted);
+}
+.badge.won { color: var(--selected); border-color: var(--selected); }
+.badge.lost { color: var(--danger); border-color: var(--danger); }
+.badge.playing { color: var(--accent); border-color: var(--accent); }
+
+/* ---- Show / hide password ---- */
+.password-field { position: relative; display: flex; }
+.password-field input { flex: 1; min-width: 0; padding-right: 44px; }
+.reveal-password {
+  position: absolute; right: 4px; top: 50%; transform: translateY(-50%);
+  width: 36px; height: 36px; padding: 6px; border: none; border-radius: 4px;
+  background: transparent; color: var(--muted); display: grid; place-items: center;
+}
+.reveal-password[hidden] { display: none; }
+.reveal-password:hover, .reveal-password:focus-visible { color: var(--accent); }
+.reveal-password:focus-visible { outline: 2px solid var(--accent); }
+.reveal-password svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.reveal-password .eye-closed,
+.reveal-password[aria-pressed="true"] .eye-open { display: none; }
+.reveal-password[aria-pressed="true"] .eye-closed { display: block; }
+
+/* ---- Victory conditions ---- */
+.victories .help { margin: 0 0 8px; display: block; }
+.victory-option { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 16px; padding: 6px 0; }
+.new-game label.check { font-weight: normal; display: flex; gap: 8px; align-items: baseline; flex: 1 1 320px; }
+.new-game label.victory-target { font-weight: normal; font-size: .9rem; color: var(--muted); display: flex; align-items: center; gap: 8px; }
+.victory-target input { width: 90px; }
+.victory-target input:disabled { opacity: .45; }
+.goal-line + .goal-line { margin-top: 4px; }
+.goal-heading { color: var(--text); font-weight: bold; }

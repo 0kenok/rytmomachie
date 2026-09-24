@@ -211,10 +211,22 @@
     const w = state.captured.white;
     const b = state.captured.black;
     const sum = (list) => list.reduce((a, p) => a + p.value, 0);
-    const score = state.victory === "goods"
-      ? { white: sum(w), black: sum(b) }
-      : { white: w.length, black: b.length };
-    goalEl.textContent = fmt(T[`goal_${state.victory}`], { target: state.target, ...score });
+    goalEl.textContent = "";
+    if (Object.keys(state.victories).length > 1) {
+      const heading = document.createElement("div");
+      heading.className = "goal-line goal-heading";
+      heading.textContent = T.goal_any;
+      goalEl.appendChild(heading);
+    }
+    for (const [kind, target] of Object.entries(state.victories)) {
+      const score = kind === "goods"
+        ? { white: sum(w), black: sum(b) }
+        : { white: w.length, black: b.length };
+      const line = document.createElement("div");
+      line.className = "goal-line";
+      line.textContent = fmt(T[`goal_${kind}`], { target, ...score });
+      goalEl.appendChild(line);
+    }
   }
 
   function renderCaptured() {

@@ -1,0 +1,12 @@
+{% extends "game/base.html" %}
+{% load i18n %}
+{% block title %}{% translate "Log in" %} · Rythmomachie{% endblock %}
+{% block content %}
+<form class="card auth-form" method="post" action="{% url 'game:login' %}">
+  <h1>{% translate "Log in" %}</h1>
+  {% include "game/account/_form.html" %}
+  <button type="submit" class="primary">{% translate "Log in" %}</button>
+  <p class="help">{% translate "No account yet?" %}
+    <a href="{% url 'game:signup' %}{% if next %}?next={{ next|urlencode }}{% endif %}">{% translate "Sign up" %}</a></p>
+</form>
+{% endblock %}

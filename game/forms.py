@@ -28,12 +28,21 @@ class NewGameForm(forms.Form):
         required=False,
     )
     side = forms.ChoiceField(label=_("You play"), choices=SIDE_CHOICES, initial=engine.WHITE, required=False)
-    victory = forms.ChoiceField(choices=VICTORY_CHOICES, initial=engine.VICTORY_BODY)
-    target = forms.IntegerField(
-        required=False,
-        min_value=1,
-        max_value=5000,
-        help_text=_("Pieces (de corpore) or total value (de bonis). Leave empty for the default."),
+    victories = forms.MultipleChoiceField(
+        label=_("Victory conditions"),
+        choices=VICTORY_CHOICES,
+        initial=[engine.VICTORY_BODY],
+        widget=forms.CheckboxSelectMultiple,
+        error_messages={"required": _("Choose at least one victory condition.")},
+    )
+    # Each side has 24 pieces.
+    target_body = forms.IntegerField(
+        label=_("Pieces to capture"), required=False, min_value=1, max_value=24,
+        widget=forms.NumberInput(attrs={"placeholder": engine.VICTORY_DEFAULT_TARGET[engine.VICTORY_BODY]}),
+    )
+    target_goods = forms.IntegerField(
+        label=_("Total value to capture"), required=False, min_value=1, max_value=5000,
+        widget=forms.NumberInput(attrs={"placeholder": engine.VICTORY_DEFAULT_TARGET[engine.VICTORY_GOODS]}),
     )
 
     def clean(self):
@@ -41,4 +50,11 @@ class NewGameForm(forms.Form):
         if data.get("mode") == Game.AI:
             data["ai_level"] = data.get("ai_level") or ai.MEDIUM
             data["side"] = data.get("side") or engine.WHITE
+        targets = {
+            engine.VICTORY_BODY: data.get("target_body"),
+            engine.VICTORY_GOODS: data.get("target_goods"),
+            engine.VICTORY_PROGRESSION: None,
+        }
+        # {victory type: target or None for the default}, for engine.new_game().
+        data["victory_targets"] = {kind: targets[kind] for kind in data.get("victories", [])}
         return data

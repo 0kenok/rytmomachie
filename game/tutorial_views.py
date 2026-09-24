@@ -5,6 +5,7 @@ from django.shortcuts import render
 from django.views.decorators.http import require_GET, require_POST
 
 from . import engine, tutorial
+from .models import TutorialProgress
 from .views import ILLEGAL_MOVE_MESSAGES, _error, _json_body, js_strings
 
 STATES_KEY = "tutorial_states"
@@ -34,6 +35,16 @@ def _save(request, lesson, state):
         done = request.session.get(DONE_KEY, [])
         if lesson.slug not in done:
             request.session[DONE_KEY] = done + [lesson.slug]
+        if request.user.is_authenticated:
+            TutorialProgress.objects.get_or_create(user=request.user, slug=lesson.slug)
+
+
+def _done(request):
+    """Slugs of completed lessons: this session's, plus the account's."""
+    done = set(request.session.get(DONE_KEY, []))
+    if request.user.is_authenticated:
+        done |= set(TutorialProgress.objects.filter(user=request.user).values_list("slug", flat=True))
+    return done & set(tutorial.BY_SLUG)
 
 
 def _payload(lesson, state):
@@ -50,8 +61,7 @@ def _payload(lesson, state):
         "winner": state["winner"],
         "win_reason": state["win_reason"],
         "log": state["log"],
-        "victory": state["victory"],
-        "target": state["target"],
+        "victories": engine.victories(state),
         "your_sides": [engine.WHITE],
         "legal_moves": legal,
         "ai": None,
@@ -64,7 +74,7 @@ def _payload(lesson, state):
 
 
 def index(request):
-    done = set(request.session.get(DONE_KEY, []))
+    done = _done(request)
     chapters = []
     for number, lesson in enumerate(tutorial.LESSONS, start=1):
         if not chapters or chapters[-1]["title"] != lesson.chapter:
@@ -73,7 +83,7 @@ def index(request):
     next_up = next((l for l in tutorial.LESSONS if l.slug not in done), None)
     return render(request, "game/tutorial_index.html", {
         "chapters": chapters,
-        "done_count": len(done & set(tutorial.BY_SLUG)),
+        "done_count": len(done),
         "total": len(tutorial.LESSONS),
         "next_up": next_up,
     })

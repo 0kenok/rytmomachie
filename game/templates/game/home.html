@@ -36,16 +36,32 @@
     {{ form.side }}
   </div>
 
-  <label for="{{ form.victory.id_for_label }}">{% translate "Victory condition" %}</label>
-  {{ form.victory }}
-  {% if form.victory.errors %}<div class="error">{{ form.victory.errors }}</div>{% endif %}
-
-  <label for="{{ form.target.id_for_label }}">{% translate "Target" %}</label>
-  {{ form.target }}
-  <small class="help">{{ form.target.help_text }} {% translate "Defaults: 12 pieces, or a value of 500." %}</small>
-  {% if form.target.errors %}<div class="error">{{ form.target.errors }}</div>{% endif %}
+  <fieldset class="victories">
+    <legend>{{ form.victories.label }}</legend>
+    <p class="help">{% translate "Tick one or more. The first condition a player reaches wins the game." %}</p>
+    {% for checkbox in form.victories %}
+    <div class="victory-option">
+      <label class="check">{{ checkbox.tag }} {{ checkbox.choice_label }}</label>
+      {% if checkbox.data.value == "body" %}
+        <label class="victory-target">{{ form.target_body.label }} {{ form.target_body }}</label>
+        {% if form.target_body.errors %}<div class="error">{{ form.target_body.errors }}</div>{% endif %}
+      {% elif checkbox.data.value == "goods" %}
+        <label class="victory-target">{{ form.target_goods.label }} {{ form.target_goods }}</label>
+        {% if form.target_goods.errors %}<div class="error">{{ form.target_goods.errors }}</div>{% endif %}
+      {% endif %}
+    </div>
+    {% endfor %}
+    {% if form.victories.errors %}<div class="error">{{ form.victories.errors }}</div>{% endif %}
+  </fieldset>
 
   <button type="submit" class="primary">{% translate "Start game" %}</button>
+  {% if not user.is_authenticated %}
+  {% url 'game:login' as login_url %}{% url 'game:signup' as signup_url %}
+  <p class="help">{% blocktranslate trimmed %}
+    <a href="{{ login_url }}">Log in</a> or <a href="{{ signup_url }}">create an account</a>
+    to keep your games and find them again later.
+  {% endblocktranslate %}</p>
+  {% endif %}
 </form>
 {% endblock %}
 {% block scripts %}
@@ -61,5 +77,15 @@
     radios.forEach((r) => r.addEventListener("change", sync));
     sync();
   })();
+
+  // A target box is only used when its victory condition is ticked.
+  document.querySelectorAll(".victory-option").forEach((option) => {
+    const checkbox = option.querySelector('input[type="checkbox"]');
+    const target = option.querySelector('input[type="number"]');
+    if (!target) return;
+    const sync = () => { target.disabled = !checkbox.checked; };
+    checkbox.addEventListener("change", sync);
+    sync();
+  });
 </script>
 {% endblock %}

@@ -27,6 +27,20 @@ The rules are at `/rules/`. New players can start with the interactive tutorial
 at `/tutorial/`: eleven short lessons, from moving a circle to winning a small
 game against the computer. Progress is kept in the browser session.
 
+## Accounts
+
+Accounts are optional: anyone can play without one. With an account (sign up
+at `/account/signup/`), games you create or join are saved to it, and the
+account page at `/account/` shows your wins, losses, games in progress (with a
+link to resume each one) and tutorial progress. Lessons finished before logging
+in are added to the account when you log in.
+
+To use the Django admin at `/admin/`, create an administrator first:
+
+```bash
+.venv/bin/python manage.py createsuperuser
+```
+
 ## Tests
 
 ```bash
@@ -38,6 +52,7 @@ game against the computer. Progress is kept in the browser session.
 - `game/engine.py`: the rules engine (movement, captures, victory). It is plain
   Python, and the game state is a JSON dict stored in `Game.state`.
 - `game/ai.py`: the computer opponent.
+- `game/accounts.py`: sign up, log in and the account page.
 - `game/tutorial.py`: the tutorial lessons (positions, goals, hints). To add a
   lesson, append a `Lesson` with a `solution`; the tests check it can be solved.
 - `game/views.py`: HTML pages plus a small JSON API (`state/`, `move/`, `resign/`).

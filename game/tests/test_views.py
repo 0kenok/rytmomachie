@@ -13,7 +13,7 @@ class ViewTests(TestCase):
         self.client.cookies[settings.LANGUAGE_COOKIE_NAME] = "en"
 
     def create(self, **data):
-        form = {"mode": Game.LOCAL, "victory": engine.VICTORY_BODY, "target": ""}
+        form = {"mode": Game.LOCAL, "victories": [engine.VICTORY_BODY]}
         form.update(data)
         return self.client.post(reverse("game:create"), form)
 
@@ -27,17 +27,35 @@ class ViewTests(TestCase):
         self.assertContains(self.client.get(reverse("game:rules")), "Assault")
 
     def test_create_redirects_with_key(self):
-        res = self.create(target="5")
+        res = self.create(target_body="5")
         game = Game.objects.get()
         self.assertRedirects(res, f"{reverse('game:play', args=[game.id])}?key={game.white_key}")
-        self.assertEqual(game.state["target"], 5)
+        self.assertEqual(game.state["victories"], {"body": 5})
 
     def test_create_uses_default_target(self):
-        self.create(victory=engine.VICTORY_GOODS)
-        self.assertEqual(Game.objects.get().state["target"], 500)
+        self.create(victories=[engine.VICTORY_GOODS])
+        self.assertEqual(Game.objects.get().state["victories"], {"goods": 500})
+
+    def test_combined_victories(self):
+        self.create(victories=["progression", "body", "goods"], target_body="3", target_goods="")
+        self.assertEqual(
+            Game.objects.get().state["victories"], {"body": 3, "goods": 500, "progression": 0}
+        )
+
+    def test_unticked_target_is_ignored(self):
+        self.create(victories=["progression"], target_body="3")
+        self.assertEqual(Game.objects.get().state["victories"], {"progression": 0})
+
+    def test_at_least_one_victory_required(self):
+        res = self.create(victories=[])
+        self.assertEqual(res.status_code, 400)
+        self.assertContains(res, "Choose at least one victory condition.", status_code=400)
+
+    def test_body_target_cannot_exceed_24(self):
+        self.assertEqual(self.create(target_body="30").status_code, 400)
 
     def test_invalid_form(self):
-        self.assertEqual(self.create(victory="bogus").status_code, 400)
+        self.assertEqual(self.create(victories=["bogus"]).status_code, 400)
 
     def test_local_game_controls_both_sides(self):
         self.create()

@@ -1,0 +1,67 @@
+{% extends "game/base.html" %}
+{% load i18n %}
+{% block title %}{% translate "My account" %} · Rythmomachie{% endblock %}
+{% block content %}
+<section class="account-head">
+  <div>
+    <h1>{{ user.username }}</h1>
+    <p class="help">{% blocktranslate with date=user.date_joined|date:"DATE_FORMAT" %}Member since {{ date }}{% endblocktranslate %}</p>
+  </div>
+  <div class="account-actions">
+    <a class="button" href="{% url 'game:password_change' %}">{% translate "Change password" %}</a>
+    <form method="post" action="{% url 'game:logout' %}">
+      {% csrf_token %}
+      <button type="submit">{% translate "Log out" %}</button>
+    </form>
+  </div>
+</section>
+
+<section class="stats">
+  <div class="card stat"><span class="stat-value">{{ stats.won }}</span><span class="stat-label">{% translate "Won" %}</span></div>
+  <div class="card stat"><span class="stat-value">{{ stats.lost }}</span><span class="stat-label">{% translate "Lost" %}</span></div>
+  <div class="card stat"><span class="stat-value">{{ stats.playing }}</span><span class="stat-label">{% translate "In progress" %}</span></div>
+  <a class="card stat" href="{% url 'game:tutorial' %}"><span class="stat-value">{{ lessons_done }}/{{ lessons_total }}</span><span class="stat-label">{% translate "Tutorial lessons" %}</span></a>
+</section>
+
+<section>
+  <div class="section-head">
+    <h2>{% translate "My games" %}</h2>
+    <a class="button primary" href="{% url 'game:home' %}">{% translate "New game" %}</a>
+  </div>
+  {% if rows %}
+  <div class="table-wrap">
+    <table class="games">
+      <thead>
+        <tr>
+          <th>{% translate "Opponent" %}</th>
+          <th>{% translate "Side" %}</th>
+          <th>{% translate "Moves" %}</th>
+          <th>{% translate "Result" %}</th>
+          <th>{% translate "Last move" %}</th>
+          <th><span class="visually-hidden">{% translate "Open" %}</span></th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for row in rows %}
+        <tr>
+          <td>{{ row.opponent }}</td>
+          <td>{% if row.side == "white" %}{% translate "White" %}{% elif row.side == "black" %}{% translate "Black" %}{% else %}{% translate "Both" %}{% endif %}</td>
+          <td>{{ row.moves }}</td>
+          <td>
+            {% if row.result == "won" %}<span class="badge won">{% translate "Won" context "one game" %}</span>
+            {% elif row.result == "lost" %}<span class="badge lost">{% translate "Lost" context "one game" %}</span>
+            {% elif row.finished %}<span class="badge">{% translate "Finished" %}</span>
+            {% else %}<span class="badge playing">{% translate "In progress" context "one game" %}</span>{% endif %}
+          </td>
+          <td>{{ row.game.updated_at|date:"SHORT_DATETIME_FORMAT" }}</td>
+          <td><a href="{{ row.url }}">{% if row.finished %}{% translate "View" %}{% else %}{% translate "Resume" %}{% endif %}</a></td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% else %}
+  <p class="card">{% translate "You have not played any games with this account yet." %}</p>
+  {% endif %}
+</section>
+{% endblock %}

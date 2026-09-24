@@ -233,3 +233,48 @@ class VictoryTests(SimpleTestCase):
         self.assertEqual(engine.legal_moves(state), {})
         with self.assertRaises(engine.IllegalMove):
             engine.apply_move(state, (3, 2), (4, 1))
+
+
+class CombinedVictoryTests(SimpleTestCase):
+    def test_new_game_victories(self):
+        self.assertEqual(engine.new_game()["victories"], {"body": 12})
+        state = engine.new_game(victories={"progression": None, "goods": 50})
+        self.assertEqual(state["victories"], {"goods": 50, "progression": 0})
+        with self.assertRaises(ValueError):
+            engine.new_game(victories={})
+        with self.assertRaises(ValueError):
+            engine.new_game(victories={"nope": 1})
+
+    def test_old_saved_games_still_read(self):
+        old = {"victory": "goods", "target": 300}
+        self.assertEqual(engine.victories(old), {"goods": 300})
+
+    def equality_capture(self, victories):
+        state = position(
+            piece(WHITE, CIRCLE, 9, 5, 2),
+            piece(BLACK, CIRCLE, 9, 7, 4),
+            piece(BLACK, CIRCLE, 3, 14, 0),
+        )
+        state["victories"] = victories
+        return engine.apply_move(state, (5, 2), (6, 3))
+
+    def test_any_enabled_condition_wins(self):
+        # Capturing the 9 reaches the goods target even though body needs more.
+        after = self.equality_capture({"body": 5, "goods": 9})
+        self.assertEqual(after["winner"], WHITE)
+        self.assertEqual(after["win_reason"], {"code": "goods", "total": 9})
+
+    def test_disabled_condition_does_not_win(self):
+        after = self.equality_capture({"body": 5, "progression": 0})
+        self.assertIsNone(after["winner"])
+
+    def test_progression_alongside_body(self):
+        state = position(
+            piece(WHITE, CIRCLE, 2, 9, 1),
+            piece(WHITE, CIRCLE, 4, 9, 2),
+            piece(WHITE, CIRCLE, 6, 8, 2),
+            piece(BLACK, CIRCLE, 3, 15, 7),
+        )
+        state["victories"] = {"body": 12, "progression": 0}
+        after = engine.apply_move(state, (8, 2), (9, 3))
+        self.assertEqual(after["win_reason"]["code"], "progression")
