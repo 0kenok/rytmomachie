@@ -11,7 +11,7 @@ from django.utils.translation import gettext as _
 from django.utils.translation import gettext_lazy
 from django.views.decorators.http import require_GET, require_POST
 
-from . import ai, engine
+from . import ai, engine, ranking
 from .forms import NewGameForm
 from .models import Game
 
@@ -83,6 +83,10 @@ def js_strings():
 
 def rules(request):
     return render(request, "game/rules.html")
+
+
+def leaderboard(request):
+    return render(request, "game/leaderboard.html", {"rows": ranking.leaderboard()})
 
 
 @require_POST
@@ -201,6 +205,7 @@ def move(request, game_id):
             game.state = engine.apply_move(game.state, frm, to)
         except engine.IllegalMove as exc:
             return _illegal(exc)
+        ranking.record_result(game)
         game.version += 1
         game.save()
     return JsonResponse(_payload(game, sides))
@@ -222,6 +227,7 @@ def resign(request, game_id):
             game.state = engine.resign(game.state, side)
         except engine.IllegalMove as exc:
             return _illegal(exc)
+        ranking.record_result(game)
         game.version += 1
         game.save()
     return JsonResponse(_payload(game, sides))

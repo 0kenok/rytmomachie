@@ -9,6 +9,9 @@ from django.utils.translation import gettext_lazy as _
 from . import ai, engine
 
 
+INITIAL_RATING = 1200
+
+
 def new_key():
     return secrets.token_urlsafe(16)
 
@@ -46,6 +49,10 @@ class Game(models.Model):
         settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True, blank=True,
         related_name="games_as_black",
     )
+    # Rating points each player won (positive) or lost (negative) when this
+    # game ended. None while the game runs, or if it is not rated.
+    white_rating_change = models.IntegerField(null=True, blank=True)
+    black_rating_change = models.IntegerField(null=True, blank=True)
     state = models.JSONField()
     version = models.PositiveIntegerField(default=0)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -107,6 +114,14 @@ class Game(models.Model):
             return "playing"
         return "won" if winner in sides else "lost"
 
+    def rating_change_for(self, user):
+        """Rating points `user` won or lost in this game, or None."""
+        if self.white_player_id == user.pk:
+            return self.white_rating_change
+        if self.black_player_id == user.pk:
+            return self.black_rating_change
+        return None
+
     def opponent_label(self, user):
         if self.mode == self.AI:
             return gettext("Computer (%(level)s)") % {"level": self.get_ai_level_display()}
@@ -128,3 +143,22 @@ class TutorialProgress(models.Model):
 
     def __str__(self):
         return f"{self.user} completed {self.slug}"
+
+
+class PlayerRating(models.Model):
+    """A player's Elo rating from online games against other accounts."""
+
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="rating")
+    rating = models.IntegerField(default=INITIAL_RATING)
+    wins = models.PositiveIntegerField(default=0)
+    losses = models.PositiveIntegerField(default=0)
+
+    class Meta:
+        ordering = ["-rating"]
+
+    def __str__(self):
+        return f"{self.user} ({self.rating})"
+
+    @property
+    def games(self):
+        return self.wins + self.losses

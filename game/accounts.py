@@ -13,7 +13,7 @@ from django.urls import reverse, reverse_lazy
 from django.utils.http import url_has_allowed_host_and_scheme
 from django.utils.translation import gettext as _
 
-from . import tutorial
+from . import ranking, tutorial
 from .models import Game, TutorialProgress
 from .tutorial_views import DONE_KEY
 
@@ -85,13 +85,16 @@ def account(request):
             "side": sides[0] if len(sides) == 1 else "",
             "opponent": game.opponent_label(user),
             "moves": len(game.state.get("log", [])),
+            "rating_change": game.rating_change_for(user),
             "url": f"{reverse('game:play', args=[game.id])}?key={game.key_for(user)}",
         })
+    rating = next((r for r in ranking.leaderboard() if r.user_id == user.pk), None)
     done = set(TutorialProgress.objects.filter(user=user).values_list("slug", flat=True))
     done &= set(tutorial.BY_SLUG)
     return render(request, "game/account/account.html", {
         "rows": rows,
         "stats": stats,
+        "rating": rating,
         "lessons_done": len(done),
         "lessons_total": len(tutorial.LESSONS),
     })

@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Rythmomachie\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-24 17:03+0000\n"
+"POT-Creation-Date: 2026-09-24 17:30+0000\n"
 "PO-Revision-Date: 2026-09-23 18:30+0200\n"
 "Last-Translator: 0kenok\n"
 "Language-Team: French\n"
@@ -14,245 +14,262 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-#: accounts.py:43
+#: game/accounts.py:43
 #, python-format
 msgid "Welcome, %(name)s! Your account is ready."
 msgstr "Bienvenue, %(name)s ! Votre compte est prêt."
 
-#: accounts.py:62
+#: game/accounts.py:62
 msgid "Your password has been changed."
 msgstr "Votre mot de passe a été modifié."
 
-#: forms.py:10
+#: game/forms.py:10
 msgid "De corpore: capture a number of pieces"
 msgstr "De corpore : prendre un nombre de pièces"
 
-#: forms.py:11
+#: game/forms.py:11
 msgid "De bonis: capture pieces worth a total value"
 msgstr "De bonis : prendre des pièces d'une valeur totale"
 
-#: forms.py:12
+#: game/forms.py:12
 msgid "Victoria magna: three pieces in progression in the enemy half"
 msgstr "Victoria magna : trois pièces en progression dans la moitié adverse"
 
-#: forms.py:17
+#: game/forms.py:17
 msgid "White (you move first)"
 msgstr "Blancs (vous commencez)"
 
-#: forms.py:18 templates/game/account/account.html:48 views.py:46
+#: game/forms.py:18 game/templates/game/account/account.html:53
+#: game/views.py:46
 msgid "Black"
 msgstr "Noirs"
 
-#: forms.py:19
+#: game/forms.py:19
 msgid "Random"
 msgstr "Au hasard"
 
-#: forms.py:24
+#: game/forms.py:24
 msgid "Computer level"
 msgstr "Niveau de l'ordinateur"
 
-#: forms.py:30
+#: game/forms.py:30
 msgid "You play"
 msgstr "Vous jouez"
 
-#: forms.py:32
+#: game/forms.py:32
 msgid "Victory conditions"
 msgstr "Conditions de victoire"
 
-#: forms.py:36
+#: game/forms.py:36
 msgid "Choose at least one victory condition."
 msgstr "Choisissez au moins une condition de victoire."
 
-#: forms.py:40
+#: game/forms.py:40
 msgid "Pieces to capture"
 msgstr "Pièces à prendre"
 
-#: forms.py:44
+#: game/forms.py:44
 msgid "Total value to capture"
 msgstr "Valeur totale à prendre"
 
-#: models.py:21
+#: game/models.py:24
 msgid "Against the computer"
 msgstr "Contre l'ordinateur"
 
-#: models.py:22
+#: game/models.py:25
 msgid "Same screen (hot seat)"
 msgstr "Même écran (chacun son tour)"
 
-#: models.py:23
+#: game/models.py:26
 msgid "Two browsers (share a link)"
 msgstr "Deux navigateurs (partager un lien)"
 
-#: models.py:26
+#: game/models.py:29
 msgid "Beginner"
 msgstr "Débutant"
 
-#: models.py:27
+#: game/models.py:30
 msgid "Easy"
 msgstr "Facile"
 
-#: models.py:28
+#: game/models.py:31
 msgid "Medium"
 msgstr "Moyen"
 
-#: models.py:29
+#: game/models.py:32
 msgid "Hard"
 msgstr "Difficile"
 
-#: models.py:112
+#: game/models.py:127
 #, python-format
 msgid "Computer (%(level)s)"
 msgstr "Ordinateur (%(level)s)"
 
-#: models.py:114
+#: game/models.py:129
 msgid "Same screen"
 msgstr "Même écran"
 
-#: models.py:116
+#: game/models.py:131
 msgid "Waiting for an opponent"
 msgstr "En attente d'un adversaire"
 
-#: templates/game/account/_form.html:11 templates/game/account/_form.html:12
+#: game/templates/game/account/_form.html:11
+#: game/templates/game/account/_form.html:12
 msgid "Show password"
 msgstr "Afficher le mot de passe"
 
-#: templates/game/account/_form.html:12
+#: game/templates/game/account/_form.html:12
 msgid "Hide password"
 msgstr "Masquer le mot de passe"
 
-#: templates/game/account/account.html:3
+#: game/templates/game/account/account.html:3
 msgid "My account"
 msgstr "Mon compte"
 
-#: templates/game/account/account.html:8
+#: game/templates/game/account/account.html:8
 #, python-format
 msgid "Member since %(date)s"
 msgstr "Membre depuis le %(date)s"
 
-#: templates/game/account/account.html:11
-#: templates/game/account/password_change.html:3
-#: templates/game/account/password_change.html:6
-#: templates/game/account/password_change.html:8
+#: game/templates/game/account/account.html:11
+#: game/templates/game/account/password_change.html:3
+#: game/templates/game/account/password_change.html:6
+#: game/templates/game/account/password_change.html:8
 msgid "Change password"
 msgstr "Changer le mot de passe"
 
-#: templates/game/account/account.html:14
+#: game/templates/game/account/account.html:14
 msgid "Log out"
 msgstr "Se déconnecter"
 
-#: templates/game/account/account.html:20
+#: game/templates/game/account/account.html:20
+#: game/templates/game/leaderboard.html:22
 msgid "Won"
 msgstr "Gagnées"
 
-#: templates/game/account/account.html:21
+#: game/templates/game/account/account.html:21
+#: game/templates/game/leaderboard.html:23
 msgid "Lost"
 msgstr "Perdues"
 
-#: templates/game/account/account.html:22
+#: game/templates/game/account/account.html:22
 msgid "In progress"
 msgstr "En cours"
 
-#: templates/game/account/account.html:23
+#: game/templates/game/account/account.html:25
+#, python-format
+msgid "Rating · #%(rank)s"
+msgstr "Cote · #%(rank)s"
+
+#: game/templates/game/account/account.html:25
+#: game/templates/game/account/account.html:44
+#: game/templates/game/leaderboard.html:21
+msgid "Rating"
+msgstr "Cote"
+
+#: game/templates/game/account/account.html:27
 msgid "Tutorial lessons"
 msgstr "Leçons du tutoriel"
 
-#: templates/game/account/account.html:28
+#: game/templates/game/account/account.html:32
 msgid "My games"
 msgstr "Mes parties"
 
-#: templates/game/account/account.html:29 templates/game/base.html:14
-#: templates/game/home.html:22
+#: game/templates/game/account/account.html:33 game/templates/game/base.html:14
+#: game/templates/game/home.html:22
 msgid "New game"
 msgstr "Nouvelle partie"
 
-#: templates/game/account/account.html:36
+#: game/templates/game/account/account.html:40
 msgid "Opponent"
 msgstr "Adversaire"
 
-#: templates/game/account/account.html:37
+#: game/templates/game/account/account.html:41
 msgid "Side"
 msgstr "Camp"
 
-#: templates/game/account/account.html:38 templates/game/game.html:43
-#: templates/game/tutorial_lesson.html:52
+#: game/templates/game/account/account.html:42 game/templates/game/game.html:43
+#: game/templates/game/tutorial_lesson.html:52
 msgid "Moves"
 msgstr "Coups"
 
-#: templates/game/account/account.html:39
+#: game/templates/game/account/account.html:43
 msgid "Result"
 msgstr "Résultat"
 
-#: templates/game/account/account.html:40
+#: game/templates/game/account/account.html:45
 msgid "Last move"
 msgstr "Dernier coup"
 
-#: templates/game/account/account.html:41
+#: game/templates/game/account/account.html:46
 msgid "Open"
 msgstr "Ouvrir"
 
-#: templates/game/account/account.html:48 views.py:45
+#: game/templates/game/account/account.html:53 game/views.py:45
 msgid "White"
 msgstr "Blancs"
 
-#: templates/game/account/account.html:48
+#: game/templates/game/account/account.html:53
 msgid "Both"
 msgstr "Les deux"
 
-#: templates/game/account/account.html:51
+#: game/templates/game/account/account.html:56
 msgctxt "one game"
 msgid "Won"
 msgstr "Gagnée"
 
-#: templates/game/account/account.html:52
+#: game/templates/game/account/account.html:57
 msgctxt "one game"
 msgid "Lost"
 msgstr "Perdue"
 
-#: templates/game/account/account.html:53
+#: game/templates/game/account/account.html:58
 msgid "Finished"
 msgstr "Terminée"
 
-#: templates/game/account/account.html:54
+#: game/templates/game/account/account.html:59
 msgctxt "one game"
 msgid "In progress"
 msgstr "En cours"
 
-#: templates/game/account/account.html:57
+#: game/templates/game/account/account.html:63
 msgid "View"
 msgstr "Voir"
 
-#: templates/game/account/account.html:57
+#: game/templates/game/account/account.html:63
 msgid "Resume"
 msgstr "Reprendre"
 
-#: templates/game/account/account.html:64
+#: game/templates/game/account/account.html:70
 msgid "You have not played any games with this account yet."
 msgstr "Vous n'avez encore joué aucune partie avec ce compte."
 
-#: templates/game/account/login.html:3 templates/game/account/login.html:6
-#: templates/game/account/login.html:8 templates/game/account/signup.html:14
-#: templates/game/base.html:20
+#: game/templates/game/account/login.html:3
+#: game/templates/game/account/login.html:6
+#: game/templates/game/account/login.html:8
+#: game/templates/game/account/signup.html:14 game/templates/game/base.html:21
 msgid "Log in"
 msgstr "Se connecter"
 
-#: templates/game/account/login.html:9
+#: game/templates/game/account/login.html:9
 msgid "No account yet?"
 msgstr "Pas encore de compte ?"
 
-#: templates/game/account/login.html:10 templates/game/account/signup.html:3
-#: templates/game/account/signup.html:12 templates/game/base.html:21
+#: game/templates/game/account/login.html:10
+#: game/templates/game/account/signup.html:3
+#: game/templates/game/account/signup.html:12 game/templates/game/base.html:22
 msgid "Sign up"
 msgstr "S'inscrire"
 
-#: templates/game/account/password_change.html:9
+#: game/templates/game/account/password_change.html:9
 msgid "Back to my account"
 msgstr "Retour à mon compte"
 
-#: templates/game/account/signup.html:6
+#: game/templates/game/account/signup.html:6
 msgid "Create an account"
 msgstr "Créer un compte"
 
-#: templates/game/account/signup.html:7
+#: game/templates/game/account/signup.html:7
 msgid ""
 "An account keeps your games and your tutorial progress, so you can find them "
 "again on any device. You can still play without one."
@@ -261,76 +278,82 @@ msgstr ""
 "les retrouver sur n'importe quel appareil. Vous pouvez toujours jouer sans "
 "compte."
 
-#: templates/game/account/signup.html:13
+#: game/templates/game/account/signup.html:13
 msgid "Already have an account?"
 msgstr "Vous avez déjà un compte ?"
 
-#: templates/game/base.html:15 templates/game/tutorial_index.html:3
-#: templates/game/tutorial_lesson.html:3 templates/game/tutorial_lesson.html:14
+#: game/templates/game/base.html:15 game/templates/game/tutorial_index.html:3
+#: game/templates/game/tutorial_lesson.html:3
+#: game/templates/game/tutorial_lesson.html:14
 msgid "Tutorial"
 msgstr "Tutoriel"
 
-#: templates/game/base.html:16 templates/game/rules.html:3
+#: game/templates/game/base.html:16 game/templates/game/rules.html:3
 msgid "Rules"
 msgstr "Règles"
 
-#: templates/game/game.html:3
+#: game/templates/game/base.html:17 game/templates/game/leaderboard.html:3
+#: game/templates/game/leaderboard.html:6
+msgid "Ranking"
+msgstr "Classement"
+
+#: game/templates/game/game.html:3
 msgid "Game"
 msgstr "Partie"
 
-#: templates/game/game.html:8 templates/game/tutorial_lesson.html:8
+#: game/templates/game/game.html:8 game/templates/game/tutorial_lesson.html:8
 msgid "Game board"
 msgstr "Plateau de jeu"
 
-#: templates/game/game.html:12 templates/game/tutorial_lesson.html:49
+#: game/templates/game/game.html:12 game/templates/game/tutorial_lesson.html:49
 msgid "Loading…"
 msgstr "Chargement…"
 
-#: templates/game/game.html:16
+#: game/templates/game/game.html:16
 msgid "Invite your opponent"
 msgstr "Invitez votre adversaire"
 
-#: templates/game/game.html:17
+#: game/templates/game/game.html:17
 msgid "Send this link to the person playing Black:"
 msgstr "Envoyez ce lien à la personne qui joue les Noirs :"
 
-#: templates/game/game.html:20
+#: game/templates/game/game.html:20
 msgid "Copy"
 msgstr "Copier"
 
-#: templates/game/game.html:22
+#: game/templates/game/game.html:22
 msgid "Keep your own page URL private. It holds your White key."
 msgstr ""
 "Ne partagez pas l'adresse de votre propre page : elle contient votre clé des "
 "Blancs."
 
-#: templates/game/game.html:25
+#: game/templates/game/game.html:25
 msgid "You are watching this game as a spectator."
 msgstr "Vous regardez cette partie en tant que spectateur."
 
-#: templates/game/game.html:28
+#: game/templates/game/game.html:28
 #, python-format
 msgid ""
 "You are playing against the computer (level: <strong>%(level)s</strong>)."
 msgstr "Vous jouez contre l'ordinateur (niveau : <strong>%(level)s</strong>)."
 
-#: templates/game/game.html:37
+#: game/templates/game/game.html:37
 msgid "Taken by White"
 msgstr "Prises des Blancs"
 
-#: templates/game/game.html:38
+#: game/templates/game/game.html:38
 msgid "Taken by Black"
 msgstr "Prises des Noirs"
 
-#: templates/game/game.html:47
+#: game/templates/game/game.html:47
 msgid "Resign"
 msgstr "Abandonner"
 
-#: templates/game/home.html:5
+#: game/templates/game/home.html:5
 msgid "The philosophers' game"
 msgstr "Le jeu des philosophes"
 
-#: templates/game/home.html:6
+#: game/templates/game/home.html:6
 msgid ""
 "Rythmomachie (<em>rithmomachia</em>) is a medieval board game of numbers. "
 "White plays the even numbers and Black the odd ones. You capture pieces by "
@@ -341,15 +364,15 @@ msgstr ""
 "On prend les pièces par égalité, multiplication, addition, ou en les "
 "encerclant."
 
-#: templates/game/home.html:11
+#: game/templates/game/home.html:11
 msgid "Read the rules"
 msgstr "Lire les règles"
 
-#: templates/game/home.html:15
+#: game/templates/game/home.html:15
 msgid "New to the game?"
 msgstr "Vous découvrez le jeu ?"
 
-#: templates/game/home.html:16
+#: game/templates/game/home.html:16
 msgid ""
 "Learn step by step with the interactive tutorial: eleven short lessons, from "
 "your first move to your first victory."
@@ -357,19 +380,21 @@ msgstr ""
 "Apprenez pas à pas avec le tutoriel interactif : onze courtes leçons, de "
 "votre premier coup à votre première victoire."
 
-#: templates/game/home.html:26
+#: game/templates/game/home.html:26
 msgid "Players"
 msgstr "Joueurs"
 
-#: templates/game/home.html:41
+#: game/templates/game/home.html:41
 msgid "Tick one or more. The first condition a player reaches wins the game."
-msgstr "Cochez-en une ou plusieurs. La première condition atteinte par un joueur lui donne la victoire."
+msgstr ""
+"Cochez-en une ou plusieurs. La première condition atteinte par un joueur lui "
+"donne la victoire."
 
-#: templates/game/home.html:57
+#: game/templates/game/home.html:57
 msgid "Start game"
 msgstr "Commencer la partie"
 
-#: templates/game/home.html:60
+#: game/templates/game/home.html:60
 #, python-format
 msgid ""
 "<a href=\"%(login_url)s\">Log in</a> or <a href=\"%(signup_url)s\">create an "
@@ -379,11 +404,39 @@ msgstr ""
 "href=\"%(signup_url)s\">créez un compte</a> pour conserver vos parties et "
 "les retrouver plus tard."
 
-#: templates/game/tutorial_index.html:6
+#: game/templates/game/leaderboard.html:7
+msgid ""
+"Online games between two players with accounts are rated. Everyone starts at "
+"1200 points. The winner takes points from the loser: more for beating a "
+"stronger player, fewer for beating a weaker one."
+msgstr ""
+"Les parties en ligne entre deux joueurs ayant un compte sont classées. Tout "
+"le monde commence à 1200 points. Le gagnant prend des points au perdant : "
+"davantage s'il bat un joueur plus fort, moins s'il bat un joueur plus faible."
+
+#: game/templates/game/leaderboard.html:19
+msgid "Rank"
+msgstr "Rang"
+
+#: game/templates/game/leaderboard.html:20
+msgid "Player"
+msgstr "Joueur"
+
+#: game/templates/game/leaderboard.html:40
+msgid "No rated games have been played yet."
+msgstr "Aucune partie classée n'a encore été jouée."
+
+#: game/templates/game/leaderboard.html:44
+#, python-format
+msgid ""
+"<a href=\"%(signup_url)s\">Create an account</a> to appear in the ranking."
+msgstr "<a href=\"%(signup_url)s\">Créez un compte</a> pour apparaître dans le classement."
+
+#: game/templates/game/tutorial_index.html:6
 msgid "Learn to play"
 msgstr "Apprendre à jouer"
 
-#: templates/game/tutorial_index.html:7
+#: game/templates/game/tutorial_index.html:7
 msgid ""
 "Short interactive lessons, from moving your first piece to winning a game. "
 "Each lesson sets up a position on the board and gives you one goal."
@@ -391,97 +444,97 @@ msgstr ""
 "De courtes leçons interactives, du premier déplacement jusqu'à la victoire. "
 "Chaque leçon installe une position sur le plateau et vous donne un objectif."
 
-#: templates/game/tutorial_index.html:14
+#: game/templates/game/tutorial_index.html:14
 #, python-format
 msgid "%(done_count)s of %(total)s lessons completed"
 msgstr "%(done_count)s leçon(s) terminée(s) sur %(total)s"
 
-#: templates/game/tutorial_index.html:17
+#: game/templates/game/tutorial_index.html:17
 msgid "Continue"
 msgstr "Continuer"
 
-#: templates/game/tutorial_index.html:17
+#: game/templates/game/tutorial_index.html:17
 msgid "Start the first lesson"
 msgstr "Commencer la première leçon"
 
-#: templates/game/tutorial_index.html:20
+#: game/templates/game/tutorial_index.html:20
 msgid "You have completed every lesson!"
 msgstr "Vous avez terminé toutes les leçons !"
 
-#: templates/game/tutorial_index.html:21
+#: game/templates/game/tutorial_index.html:21
 msgid "Play against the computer"
 msgstr "Jouer contre l'ordinateur"
 
-#: templates/game/tutorial_index.html:34
+#: game/templates/game/tutorial_index.html:34
 msgid "completed"
 msgstr "terminée"
 
-#: templates/game/tutorial_lesson.html:15
+#: game/templates/game/tutorial_lesson.html:15
 #, python-format
 msgid "Lesson %(number)s of %(total)s"
 msgstr "Leçon %(number)s sur %(total)s"
 
-#: templates/game/tutorial_lesson.html:20
+#: game/templates/game/tutorial_lesson.html:20
 msgid "Goal"
 msgstr "Objectif"
 
-#: templates/game/tutorial_lesson.html:25
+#: game/templates/game/tutorial_lesson.html:25
 msgid "Moves left:"
 msgstr "Coups restants :"
 
-#: templates/game/tutorial_lesson.html:28
+#: game/templates/game/tutorial_lesson.html:28
 msgid "Well done!"
 msgstr "Bravo !"
 
-#: templates/game/tutorial_lesson.html:28
+#: game/templates/game/tutorial_lesson.html:28
 msgid "Lesson completed."
 msgstr "Leçon réussie."
 
-#: templates/game/tutorial_lesson.html:31
+#: game/templates/game/tutorial_lesson.html:31
 msgid "Not quite."
 msgstr "Pas tout à fait."
 
-#: templates/game/tutorial_lesson.html:31
+#: game/templates/game/tutorial_lesson.html:31
 msgid "Restart the lesson and try again."
 msgstr "Recommencez la leçon et réessayez."
 
-#: templates/game/tutorial_lesson.html:35
+#: game/templates/game/tutorial_lesson.html:35
 msgid "Show a hint"
 msgstr "Afficher un indice"
 
-#: templates/game/tutorial_lesson.html:40
+#: game/templates/game/tutorial_lesson.html:40
 msgid "Restart"
 msgstr "Recommencer"
 
-#: templates/game/tutorial_lesson.html:42
+#: game/templates/game/tutorial_lesson.html:42
 msgid "Next lesson"
 msgstr "Leçon suivante"
 
-#: templates/game/tutorial_lesson.html:44
+#: game/templates/game/tutorial_lesson.html:44
 msgid "Play a real game"
 msgstr "Jouer une vraie partie"
 
-#: tutorial.py:50
+#: game/tutorial.py:50
 msgid "Moving"
 msgstr "Se déplacer"
 
-#: tutorial.py:51
+#: game/tutorial.py:51
 msgid "Capturing"
 msgstr "Prendre"
 
-#: tutorial.py:52
+#: game/tutorial.py:52
 msgid "Playing well"
 msgstr "Bien jouer"
 
-#: tutorial.py:53
+#: game/tutorial.py:53
 msgid "Winning"
 msgstr "Gagner"
 
-#: tutorial.py:59
+#: game/tutorial.py:59
 msgid "The circle"
 msgstr "Le cercle"
 
-#: tutorial.py:60
+#: game/tutorial.py:60
 msgid ""
 "Circles are the smallest pieces. They move exactly one square diagonally, to "
 "an empty square."
@@ -489,11 +542,11 @@ msgstr ""
 "Les cercles sont les plus petites pièces. Ils se déplacent d'exactement une "
 "case en diagonale, vers une case vide."
 
-#: tutorial.py:62
+#: game/tutorial.py:62
 msgid "Move your circle onto the marked square."
 msgstr "Amenez votre cercle sur la case marquée."
 
-#: tutorial.py:63
+#: game/tutorial.py:63
 msgid ""
 "Click your circle, then click the marked square just diagonally in front of "
 "it."
@@ -501,11 +554,11 @@ msgstr ""
 "Cliquez sur votre cercle, puis sur la case marquée, juste devant lui en "
 "diagonale."
 
-#: tutorial.py:72
+#: game/tutorial.py:72
 msgid "The triangle"
 msgstr "Le triangle"
 
-#: tutorial.py:73
+#: game/tutorial.py:73
 msgid ""
 "Triangles move exactly two squares in a straight line: forwards, backwards "
 "or sideways, never diagonally. They cannot jump over pieces."
@@ -514,22 +567,22 @@ msgstr ""
 "avant, en arrière ou sur le côté, jamais en diagonale. Ils ne peuvent pas "
 "sauter par-dessus les pièces."
 
-#: tutorial.py:75
+#: game/tutorial.py:75
 msgid "Bring your triangle to the marked square in two moves."
 msgstr "Amenez votre triangle sur la case marquée en deux coups."
 
-#: tutorial.py:76
+#: game/tutorial.py:76
 msgid ""
 "Go two squares forwards, then two squares sideways (or the other way round)."
 msgstr ""
 "Avancez de deux cases, puis décalez-vous de deux cases sur le côté (ou "
 "l'inverse)."
 
-#: tutorial.py:85
+#: game/tutorial.py:85
 msgid "The square"
 msgstr "Le carré"
 
-#: tutorial.py:86
+#: game/tutorial.py:86
 msgid ""
 "Squares move exactly three squares in a straight line. Like every piece, "
 "they cannot jump: here your own circle blocks the way forward."
@@ -538,20 +591,20 @@ msgstr ""
 "toutes les pièces, ils ne peuvent pas sauter : ici, votre propre cercle "
 "bloque le chemin vers l'avant."
 
-#: tutorial.py:88
+#: game/tutorial.py:88
 msgid "Bring your square to the marked square. You have three moves."
 msgstr "Amenez votre carré sur la case marquée. Vous avez trois coups."
 
-#: tutorial.py:89
+#: game/tutorial.py:89
 msgid "Go around the circle: move the square three squares sideways first."
 msgstr ""
 "Contournez le cercle : déplacez d'abord le carré de trois cases sur le côté."
 
-#: tutorial.py:98
+#: game/tutorial.py:98
 msgid "The pyramid"
 msgstr "La pyramide"
 
-#: tutorial.py:99
+#: game/tutorial.py:99
 msgid ""
 "Each side has one pyramid, built from several square numbers (White's is 36 "
 "+ 25 + 16 + 9 + 4 + 1 = 91). It may move like a circle, a triangle or a "
@@ -561,11 +614,11 @@ msgstr ""
 "des Blancs vaut 36 + 25 + 16 + 9 + 4 + 1 = 91). Elle peut se déplacer comme "
 "un cercle, un triangle ou un carré."
 
-#: tutorial.py:102
+#: game/tutorial.py:102
 msgid "Bring your pyramid to the marked square in two moves."
 msgstr "Amenez votre pyramide sur la case marquée en deux coups."
 
-#: tutorial.py:103
+#: game/tutorial.py:103
 msgid ""
 "Move three squares forwards like a square, then one square diagonally like a "
 "circle."
@@ -573,11 +626,11 @@ msgstr ""
 "Avancez de trois cases comme un carré, puis d'une case en diagonale comme un "
 "cercle."
 
-#: tutorial.py:112
+#: game/tutorial.py:112
 msgid "Capture by equality"
 msgstr "Prise par égalité"
 
-#: tutorial.py:113
+#: game/tutorial.py:113
 msgid ""
 "You never capture by moving onto a piece. Instead, after your move, any "
 "enemy piece that one of your pieces could move onto is captured if both "
@@ -587,19 +640,19 @@ msgstr ""
 "adverse sur laquelle l'une de vos pièces pourrait se déplacer est prise si "
 "les deux ont la même valeur. Votre pièce reste à sa place."
 
-#: tutorial.py:116
+#: game/tutorial.py:116
 msgid "Capture the black 9 with your 9."
 msgstr "Prenez le 9 noir avec votre 9."
 
-#: tutorial.py:117
+#: game/tutorial.py:117
 msgid "Put your circle diagonally next to the black 9."
 msgstr "Placez votre cercle en diagonale, juste à côté du 9 noir."
 
-#: tutorial.py:126
+#: game/tutorial.py:126
 msgid "Capture by assault"
 msgstr "Prise par assaut"
 
-#: tutorial.py:127
+#: game/tutorial.py:127
 msgid ""
 "Assault uses multiplication. If one of your pieces is in a straight line "
 "with an enemy piece (diagonals count), with only empty squares between them, "
@@ -611,22 +664,22 @@ msgstr ""
 "entre elles, et que votre valeur × le nombre de cases vides = la valeur "
 "adverse, la pièce adverse est prise."
 
-#: tutorial.py:131
+#: game/tutorial.py:131
 msgid "Capture the black 20 with your 4 (4 × 5 = 20)."
 msgstr "Prenez le 20 noir avec votre 4 (4 × 5 = 20)."
 
-#: tutorial.py:132
+#: game/tutorial.py:132
 msgid ""
 "Line your 4 up with the 20 so that exactly five empty squares separate them."
 msgstr ""
 "Alignez votre 4 avec le 20 de façon qu'exactement cinq cases vides les "
 "séparent."
 
-#: tutorial.py:141
+#: game/tutorial.py:141
 msgid "Capture by ambush"
 msgstr "Prise par embuscade"
 
-#: tutorial.py:142
+#: game/tutorial.py:142
 msgid ""
 "Ambush uses addition. If two of your pieces could both move onto an enemy "
 "piece, and their values add up to its value, it is captured."
@@ -635,11 +688,11 @@ msgstr ""
 "déplacer sur une pièce adverse, et que la somme de leurs valeurs est égale à "
 "la sienne, elle est prise."
 
-#: tutorial.py:144
+#: game/tutorial.py:144
 msgid "Capture the black 6 with your 2 and your 4 (2 + 4 = 6)."
 msgstr "Prenez le 6 noir avec votre 2 et votre 4 (2 + 4 = 6)."
 
-#: tutorial.py:145
+#: game/tutorial.py:145
 msgid ""
 "Your 2 already reaches the 6. Move your triangle so that it reaches the 6 "
 "too."
@@ -647,11 +700,11 @@ msgstr ""
 "Votre 2 atteint déjà le 6. Déplacez votre triangle pour qu'il l'atteigne "
 "aussi."
 
-#: tutorial.py:157
+#: game/tutorial.py:157
 msgid "Capture by siege"
 msgstr "Prise par siège"
 
-#: tutorial.py:158
+#: game/tutorial.py:158
 msgid ""
 "A piece of any value is captured when your pieces occupy every square "
 "directly next to it: above, below, left and right. The edge of the board "
@@ -661,19 +714,19 @@ msgstr ""
 "toutes les cases qui la touchent : au-dessus, en dessous, à gauche et à "
 "droite. Le bord du plateau compte comme bloqué."
 
-#: tutorial.py:161
+#: game/tutorial.py:161
 msgid "Complete the siege of the black 361."
 msgstr "Terminez le siège du 361 noir."
 
-#: tutorial.py:162
+#: game/tutorial.py:162
 msgid "Three sides are already closed. Move your 64 onto the fourth."
 msgstr "Trois côtés sont déjà fermés. Placez votre 64 sur le quatrième."
 
-#: tutorial.py:174
+#: game/tutorial.py:174
 msgid "Watch out for traps"
 msgstr "Attention aux pièges"
 
-#: tutorial.py:175
+#: game/tutorial.py:175
 msgid ""
 "Your opponent captures in exactly the same ways. Before moving, check "
 "whether an enemy piece, or two enemy pieces together, could reach the square "
@@ -684,11 +737,11 @@ msgstr ""
 "la case où vous allez. À partir de maintenant, l'ordinateur répond à vos "
 "coups."
 
-#: tutorial.py:178
+#: game/tutorial.py:178
 msgid "Move your 4 without letting Black capture it."
 msgstr "Déplacez votre 4 sans que les Noirs puissent le prendre."
 
-#: tutorial.py:179
+#: game/tutorial.py:179
 msgid ""
 "The black 1 and 3 can both reach one of your squares, and 1 + 3 = 4. Avoid "
 "that square."
@@ -696,11 +749,11 @@ msgstr ""
 "Le 1 et le 3 noirs peuvent tous deux atteindre l'une de vos cases, et 1 + 3 "
 "= 4. Évitez cette case."
 
-#: tutorial.py:192
+#: game/tutorial.py:192
 msgid "Victory de corpore"
 msgstr "Victoire de corpore"
 
-#: tutorial.py:193
+#: game/tutorial.py:193
 msgid ""
 "The simplest way to win is to capture a set number of pieces. In this small "
 "game against the computer, the first side to capture two pieces wins."
@@ -709,23 +762,23 @@ msgstr ""
 "pièces. Dans cette petite partie contre l'ordinateur, le premier camp qui "
 "prend deux pièces gagne."
 
-#: tutorial.py:196
+#: game/tutorial.py:196
 msgid "Capture two black pieces before Black captures two of yours."
 msgstr ""
 "Prenez deux pièces noires avant que les Noirs n'en prennent deux des vôtres."
 
-#: tutorial.py:197
+#: game/tutorial.py:197
 msgid ""
 "Look for equal values first: your 9 and 25 have twins on the black side."
 msgstr ""
 "Cherchez d'abord les valeurs égales : votre 9 et votre 25 ont des jumeaux "
 "chez les Noirs."
 
-#: tutorial.py:212
+#: game/tutorial.py:212
 msgid "Victoria magna"
 msgstr "Victoria magna"
 
-#: tutorial.py:213
+#: game/tutorial.py:213
 msgid ""
 "The most prestigious victory: line up three of your pieces side by side in "
 "the enemy half of the board so that their values form a progression. "
@@ -736,12 +789,12 @@ msgstr ""
 "progression. Arithmétique : 2, 4, 6. Géométrique : 4, 16, 64. Harmonique : "
 "3, 4, 6."
 
-#: tutorial.py:217
+#: game/tutorial.py:217
 msgid "Line up 2, 4 and 6 in the enemy half (past the middle line)."
 msgstr ""
 "Alignez 2, 4 et 6 dans la moitié adverse (au-delà de la ligne du milieu)."
 
-#: tutorial.py:218
+#: game/tutorial.py:218
 msgid ""
 "Walk your 6 diagonally until it stands right next to the 4, in the same line "
 "as the 2."
@@ -749,182 +802,182 @@ msgstr ""
 "Avancez votre 6 en diagonale jusqu'à ce qu'il se trouve juste à côté du 4, "
 "sur la même ligne que le 2."
 
-#: views.py:20
+#: game/views.py:20
 msgid "The game is over."
 msgstr "La partie est terminée."
 
-#: views.py:21
+#: game/views.py:21
 msgid "There is no piece on that square."
 msgstr "Il n'y a aucune pièce sur cette case."
 
-#: views.py:22
+#: game/views.py:22
 msgid "It is not your turn."
 msgstr "Ce n'est pas votre tour."
 
-#: views.py:23
+#: game/views.py:23
 msgid "That piece cannot move there."
 msgstr "Cette pièce ne peut pas aller là."
 
-#: views.py:47
+#: game/views.py:47
 msgid "circle"
 msgstr "cercle"
 
-#: views.py:48
+#: game/views.py:48
 msgid "triangle"
 msgstr "triangle"
 
-#: views.py:49
+#: game/views.py:49
 msgid "square"
 msgstr "carré"
 
-#: views.py:50
+#: game/views.py:50
 msgid "pyramid"
 msgstr "pyramide"
 
-#: views.py:51
+#: game/views.py:51
 #, python-format
 msgid "%(side)s %(shape)s %(value)s"
 msgstr "%(shape)s %(value)s (%(side)s)"
 
-#: views.py:52
+#: game/views.py:52
 msgid "move here"
 msgstr "aller ici"
 
-#: views.py:53
+#: game/views.py:53
 #, python-format
 msgid "%(side)s to move"
 msgstr "Aux %(side)s de jouer"
 
-#: views.py:55
+#: game/views.py:55
 #, python-format
 msgid "%(text)s: %(detail)s"
 msgstr "%(text)s : %(detail)s"
 
-#: views.py:56
+#: game/views.py:56
 #, python-format
 msgid "%(piece)s: %(from)s → %(to)s"
 msgstr "%(piece)s : %(from)s → %(to)s"
 
-#: views.py:57
+#: game/views.py:57
 msgid "your turn"
 msgstr "à vous"
 
-#: views.py:58
+#: game/views.py:58
 msgid "waiting for your opponent…"
 msgstr "en attente de votre adversaire…"
 
-#: views.py:59
+#: game/views.py:59
 msgid "spectating"
 msgstr "spectateur"
 
-#: views.py:60
+#: game/views.py:60
 #, python-format
 msgid "%(side)s wins: %(reason)s."
 msgstr "Victoire des %(side)s : %(reason)s."
 
-#: views.py:61
+#: game/views.py:61
 #, python-format
 msgid "captured %(count)s pieces"
 msgstr "%(count)s pièces prises"
 
-#: views.py:62
+#: game/views.py:62
 #, python-format
 msgid "captured pieces worth %(total)s"
 msgstr "pièces prises d'une valeur de %(total)s"
 
-#: views.py:63
+#: game/views.py:63
 #, python-format
 msgid "arithmetic progression %(values)s"
 msgstr "progression arithmétique %(values)s"
 
-#: views.py:64
+#: game/views.py:64
 #, python-format
 msgid "geometric progression %(values)s"
 msgstr "progression géométrique %(values)s"
 
-#: views.py:65
+#: game/views.py:65
 #, python-format
 msgid "harmonic progression %(values)s"
 msgstr "progression harmonique %(values)s"
 
-#: views.py:66
+#: game/views.py:66
 msgid "captured every enemy piece"
 msgstr "toutes les pièces adverses ont été prises"
 
-#: views.py:67
+#: game/views.py:67
 msgid "the opponent has no legal moves"
 msgstr "l'adversaire n'a plus aucun coup possible"
 
-#: views.py:68
+#: game/views.py:68
 #, python-format
 msgid "%(side)s resigned"
 msgstr "les %(side)s ont abandonné"
 
-#: views.py:69
+#: game/views.py:69
 msgid "Several ways to win; the first one reached counts:"
 msgstr "Plusieurs façons de gagner ; la première atteinte l'emporte :"
 
-#: views.py:70
+#: game/views.py:70
 #, python-format
 msgid "First to capture %(target)s pieces. White %(white)s, Black %(black)s."
 msgstr ""
 "Le premier à prendre %(target)s pièces l'emporte. Blancs %(white)s, Noirs "
 "%(black)s."
 
-#: views.py:71
+#: game/views.py:71
 #, python-format
 msgid "First to capture %(target)s in value. White %(white)s, Black %(black)s."
 msgstr ""
 "Le premier à prendre une valeur de %(target)s l'emporte. Blancs %(white)s, "
 "Noirs %(black)s."
 
-#: views.py:72
+#: game/views.py:72
 msgid "Line up three pieces in progression inside the enemy half."
 msgstr "Alignez trois pièces en progression dans la moitié adverse."
 
-#: views.py:73
+#: game/views.py:73
 #, python-format
 msgid "took %(piece)s by %(rule)s"
 msgstr "prise de %(piece)s par %(rule)s"
 
-#: views.py:74
+#: game/views.py:74
 msgid "equality"
 msgstr "égalité"
 
-#: views.py:75
+#: game/views.py:75
 msgid "assault"
 msgstr "assaut"
 
-#: views.py:76
+#: game/views.py:76
 msgid "ambush"
 msgstr "embuscade"
 
-#: views.py:77
+#: game/views.py:77
 msgid "siege"
 msgstr "siège"
 
-#: views.py:78
+#: game/views.py:78
 #, python-format
 msgid "The computer (%(level)s) is thinking…"
 msgstr "L'ordinateur (%(level)s) réfléchit…"
 
-#: views.py:79
+#: game/views.py:79
 msgid "Resign this game?"
 msgstr "Abandonner cette partie ?"
 
-#: views.py:80
+#: game/views.py:80
 msgid "Copied"
 msgstr "Copié"
 
-#: views.py:186 views.py:213 views.py:235
+#: game/views.py:190 game/views.py:218 game/views.py:241
 msgid "Invalid JSON."
 msgstr "JSON invalide."
 
-#: views.py:193
+#: game/views.py:197
 msgid "Expected 'from' and 'to' as [row, col]."
 msgstr ""
 "Les champs « from » et « to » doivent être de la forme [ligne, colonne]."
 
-#: views.py:218 views.py:239
+#: game/views.py:223 game/views.py:245
 msgid "You are not playing in this game."
 msgstr "Vous ne jouez pas dans cette partie."

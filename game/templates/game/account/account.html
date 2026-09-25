@@ -20,6 +20,10 @@
   <div class="card stat"><span class="stat-value">{{ stats.won }}</span><span class="stat-label">{% translate "Won" %}</span></div>
   <div class="card stat"><span class="stat-value">{{ stats.lost }}</span><span class="stat-label">{% translate "Lost" %}</span></div>
   <div class="card stat"><span class="stat-value">{{ stats.playing }}</span><span class="stat-label">{% translate "In progress" %}</span></div>
+  <a class="card stat" href="{% url 'game:leaderboard' %}">
+    <span class="stat-value">{% if rating %}{{ rating.rating }}{% else %}–{% endif %}</span>
+    <span class="stat-label">{% if rating %}{% blocktranslate with rank=rating.rank %}Rating · #{{ rank }}{% endblocktranslate %}{% else %}{% translate "Rating" %}{% endif %}</span>
+  </a>
   <a class="card stat" href="{% url 'game:tutorial' %}"><span class="stat-value">{{ lessons_done }}/{{ lessons_total }}</span><span class="stat-label">{% translate "Tutorial lessons" %}</span></a>
 </section>
 
@@ -37,6 +41,7 @@
           <th>{% translate "Side" %}</th>
           <th>{% translate "Moves" %}</th>
           <th>{% translate "Result" %}</th>
+          <th>{% translate "Rating" %}</th>
           <th>{% translate "Last move" %}</th>
           <th><span class="visually-hidden">{% translate "Open" %}</span></th>
         </tr>
@@ -53,6 +58,7 @@
             {% elif row.finished %}<span class="badge">{% translate "Finished" %}</span>
             {% else %}<span class="badge playing">{% translate "In progress" context "one game" %}</span>{% endif %}
           </td>
+          <td>{% if row.rating_change is not None %}<span class="rating-change {% if row.rating_change >= 0 %}up{% else %}down{% endif %}">{% if row.rating_change >= 0 %}+{% endif %}{{ row.rating_change }}</span>{% endif %}</td>
           <td>{{ row.game.updated_at|date:"SHORT_DATETIME_FORMAT" }}</td>
           <td><a href="{{ row.url }}">{% if row.finished %}{% translate "View" %}{% else %}{% translate "Resume" %}{% endif %}</a></td>
         </tr>

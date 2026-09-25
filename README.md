@@ -41,6 +41,16 @@ To use the Django admin at `/admin/`, create an administrator first:
 .venv/bin/python manage.py createsuperuser
 ```
 
+## Ranking
+
+Online games ("Two browsers") between two different accounts are rated with
+Elo: everyone starts at 1200, and when a game ends (by a win or a
+resignation) the winner takes up to 32 points from the loser, depending on
+the gap between their ratings (K = 32). Games against the computer, hot-seat
+games and games with a guest player are not rated. The leaderboard is at
+`/ranking/`, and the account page shows your rating, your rank and the points
+won or lost in each game. The rating code lives in `game/ranking.py`.
+
 ## Tests
 
 ```bash

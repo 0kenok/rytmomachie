@@ -1,0 +1,48 @@
+{% extends "game/base.html" %}
+{% load i18n %}
+{% block title %}{% translate "Ranking" %} · Rythmomachie{% endblock %}
+{% block content %}
+<section class="intro">
+  <h1>{% translate "Ranking" %}</h1>
+  <p>{% blocktranslate trimmed %}
+    Online games between two players with accounts are rated. Everyone starts
+    at 1200 points. The winner takes points from the loser: more for beating a
+    stronger player, fewer for beating a weaker one.
+  {% endblocktranslate %}</p>
+</section>
+
+{% if rows %}
+<div class="table-wrap">
+  <table class="games ranking">
+    <thead>
+      <tr>
+        <th>{% translate "Rank" %}</th>
+        <th>{% translate "Player" %}</th>
+        <th>{% translate "Rating" %}</th>
+        <th>{% translate "Won" %}</th>
+        <th>{% translate "Lost" %}</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for row in rows %}
+      <tr{% if row.user_id == user.pk %} class="you" aria-current="true"{% endif %}>
+        <td>{{ row.rank }}</td>
+        <td>{{ row.user.username }}</td>
+        <td><strong>{{ row.rating }}</strong></td>
+        <td>{{ row.wins }}</td>
+        <td>{{ row.losses }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% else %}
+<p class="card">{% translate "No rated games have been played yet." %}</p>
+{% endif %}
+
+{% if not user.is_authenticated %}
+<p class="help">{% url 'game:signup' as signup_url %}{% blocktranslate trimmed %}
+  <a href="{{ signup_url }}">Create an account</a> to appear in the ranking.
+{% endblocktranslate %}</p>
+{% endif %}
+{% endblock %}
