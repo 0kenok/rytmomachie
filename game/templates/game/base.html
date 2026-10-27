@@ -1,10 +1,10 @@
-{% load static i18n %}{% get_current_language as LANGUAGE_CODE %}<!doctype html>
+{% load static i18n assets %}{% get_current_language as LANGUAGE_CODE %}<!doctype html>
 <html lang="{{ LANGUAGE_CODE }}">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>{% block title %}Rythmomachie{% endblock %}</title>
-  <link rel="stylesheet" href="{% static 'game/style.css' %}">
+  <link rel="stylesheet" href="{% asset 'game/style.css' %}">
 </head>
 <body>
   <header class="site-header">
@@ -41,6 +41,9 @@
     {% endif %}
     {% block content %}{% endblock %}
   </main>
+  <footer class="site-footer">
+    <a href="{% url 'game:legal' %}">{% translate "Legal notice" %}</a>
+  </footer>
   {% block scripts %}{% endblock %}
 </body>
 </html>

@@ -26,6 +26,13 @@ class ViewTests(TestCase):
         self.assertContains(self.client.get(reverse("game:home")), "Start game")
         self.assertContains(self.client.get(reverse("game:rules")), "Assault")
 
+    def test_legal_page_linked_from_footer(self):
+        legal = reverse("game:legal")
+        self.assertContains(self.client.get(reverse("game:home")), f'<a href="{legal}">Legal notice</a>')
+        self.assertContains(self.client.get(legal), "Personal data")
+        self.client.cookies[settings.LANGUAGE_COOKIE_NAME] = "fr"
+        self.assertContains(self.client.get(legal), "Mentions légales")
+
     def test_create_redirects_with_key(self):
         res = self.create(target_body="5")
         game = Game.objects.get()
@@ -93,6 +100,9 @@ class ViewTests(TestCase):
         self.assertEqual(data["your_sides"], [])
         self.assertEqual(data["legal_moves"], {})
         self.assertEqual(len(data["pieces"]), 48)
+        # Hover previews cover pieces of both sides, whoever is watching.
+        sides = {p["side"] for p in data["pieces"] if p["id"] in data["previews"]}
+        self.assertEqual(sides, {engine.WHITE, engine.BLACK})
         page = self.client.get(reverse("game:play", args=[game.id]))
         self.assertNotContains(page, game.white_key)
 

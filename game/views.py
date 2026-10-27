@@ -85,6 +85,10 @@ def rules(request):
     return render(request, "game/rules.html")
 
 
+def legal(request):
+    return render(request, "game/legal.html")
+
+
 def leaderboard(request):
     return render(request, "game/leaderboard.html", {"rows": ranking.leaderboard()})
 
@@ -140,6 +144,15 @@ def play(request, game_id):
     })
 
 
+def _previews(s):
+    """Where every piece of either side could move, for the hover preview."""
+    previews = {}
+    for side in (engine.WHITE, engine.BLACK):
+        for pid, squares in engine.legal_moves(s, side).items():
+            previews[pid] = [list(sq) for sq in squares]
+    return previews
+
+
 def _payload(game, sides):
     s = game.state
     payload = {
@@ -154,6 +167,7 @@ def _payload(game, sides):
         "victories": engine.victories(s),
         "your_sides": sides,
         "legal_moves": {},
+        "previews": _previews(s),
         "ai": None,
     }
     if game.mode == Game.AI:

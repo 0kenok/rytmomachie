@@ -1,5 +1,5 @@
 {% extends "game/base.html" %}
-{% load static i18n %}
+{% load static i18n assets %}
 {% block title %}{{ lesson.title }} · {% translate "Tutorial" %} · Rythmomachie{% endblock %}
 {% block main_class %}page wide{% endblock %}
 {% block content %}
@@ -54,6 +54,19 @@
     </div>
   </aside>
 </div>
+
+<dialog id="lesson-done" class="lesson-dialog" aria-labelledby="lesson-done-title">
+  <p id="lesson-done-title" class="lesson-dialog-title">{% translate "Well done!" %}</p>
+  <p>{% translate "Lesson completed." %}</p>
+  <div class="lesson-dialog-actions">
+    <button type="button" id="dialog-restart">{% translate "Restart" %}</button>
+    {% if next_lesson %}
+      <a class="button primary" href="{% url 'game:lesson' next_lesson.slug %}" autofocus>{% translate "Next lesson" %} →</a>
+    {% else %}
+      <a class="button primary" href="{% url 'game:home' %}" autofocus>{% translate "Play a real game" %} →</a>
+    {% endif %}
+  </div>
+</dialog>
 {{ js_strings|json_script:"game-strings" }}
 {% endblock %}
 {% block scripts %}
@@ -76,15 +89,21 @@
       document.getElementById("lesson-failed").hidden = status !== "failed";
       document.getElementById("next").classList.toggle("primary", status === "success");
       document.getElementById("status").hidden = status !== "playing";
+      // Bring the way forward to the middle of the screen once the lesson is won.
+      const dialog = document.getElementById("lesson-done");
+      if (status === "success" && !dialog.open) dialog.showModal();
+      else if (status !== "success" && dialog.open) dialog.close();
     },
   };
-  document.getElementById("restart").addEventListener("click", async () => {
+  async function restart() {
     const res = await fetch(window.RYTHMO.resetUrl, {
       method: "POST",
       headers: { "X-CSRFToken": window.RYTHMO.csrfToken },
     });
     if (res.ok) window.RYTHMO.setState(await res.json());
-  });
+  }
+  document.getElementById("restart").addEventListener("click", restart);
+  document.getElementById("dialog-restart").addEventListener("click", restart);
 </script>
-<script src="{% static 'game/board.js' %}"></script>
+<script src="{% asset 'game/board.js' %}"></script>
 {% endblock %}

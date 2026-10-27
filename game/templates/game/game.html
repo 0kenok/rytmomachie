@@ -1,11 +1,15 @@
 {% extends "game/base.html" %}
-{% load static i18n %}
+{% load static i18n assets %}
 {% block title %}{% translate "Game" %} · Rythmomachie{% endblock %}
 {% block main_class %}page wide{% endblock %}
 {% block content %}
 <div class="game-layout">
   <div class="board-wrap">
     <div id="board" class="board" aria-label="{% translate 'Game board' %}"></div>
+    <label class="preview-toggle">
+      <input type="checkbox" id="show-previews">
+      {% translate "Show where a piece can move on hover" %}
+    </label>
   </div>
 
   <aside class="side-panel">
@@ -64,5 +68,5 @@
     cols: {{ cols }},
   };
 </script>
-<script src="{% static 'game/board.js' %}"></script>
+<script src="{% asset 'game/board.js' %}"></script>
 {% endblock %}

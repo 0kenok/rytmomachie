@@ -85,6 +85,20 @@ DATABASES = {
     }
 }
 
+# In production, DATABASE_URL=postgres://user:password@host:port/name
+if os.environ.get('DATABASE_URL'):
+    from urllib.parse import unquote, urlsplit
+
+    _db_url = urlsplit(os.environ['DATABASE_URL'])
+    DATABASES['default'] = {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': _db_url.path.lstrip('/'),
+        'USER': unquote(_db_url.username or ''),
+        'PASSWORD': unquote(_db_url.password or ''),
+        'HOST': _db_url.hostname or '',
+        'PORT': _db_url.port or '',
+    }
+
 
 # Password validation
 # https://docs.djangoproject.com/en/6.0/ref/settings/#auth-password-validators
@@ -131,3 +145,16 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
 
 STATIC_URL = 'static/'
+STATIC_ROOT = os.environ.get('DJANGO_STATIC_ROOT', BASE_DIR / 'staticfiles')
+
+
+# Production behind the nginx reverse proxy
+
+CSRF_TRUSTED_ORIGINS = [
+    origin for origin in os.environ.get('DJANGO_CSRF_TRUSTED_ORIGINS', '').split(',') if origin
+]
+
+if not DEBUG:
+    SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+    SESSION_COOKIE_SECURE = os.environ.get('DJANGO_SECURE_COOKIES', '0') == '1'
+    CSRF_COOKIE_SECURE = SESSION_COOKIE_SECURE

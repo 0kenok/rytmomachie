@@ -14,6 +14,8 @@
   const capWhiteEl = document.getElementById("cap-white");
   const capBlackEl = document.getElementById("cap-black");
   const resignBtn = document.getElementById("resign");
+  const previewToggle = document.getElementById("show-previews");
+  const PREVIEW_KEY = "rythmo.showPreviews";
 
   let state = null;
   let selected = null; // piece id
@@ -162,6 +164,7 @@
       }
     }
     cells.forEach((el) => boardEl.appendChild(el));
+    showPreview(boardEl.querySelector(".cell:hover"));
   }
 
   function renderStatus() {
@@ -259,6 +262,48 @@
       logEl.appendChild(li);
     }
     logEl.scrollTop = logEl.scrollHeight;
+  }
+
+  // ---- Hover preview ------------------------------------------------------
+
+  // Marks the squares the hovered piece, of either side, could move to.
+  // Toggles classes in place so the board is not rebuilt on every hover.
+  function clearPreview() {
+    boardEl.querySelectorAll(".cell.preview").forEach((el) => {
+      el.classList.remove("preview", "preview-white", "preview-black");
+    });
+  }
+
+  function showPreview(cellEl) {
+    clearPreview();
+    if (!previewToggle || !previewToggle.checked || !state || !cellEl) return;
+    const r = Number(cellEl.dataset.r);
+    const c = Number(cellEl.dataset.c);
+    const piece = state.pieces.find((p) => p.r === r && p.c === c);
+    const squares = piece && state.previews ? state.previews[piece.id] : null;
+    if (!squares) return;
+    for (const [tr, tc] of squares) {
+      const el = boardEl.querySelector(`.cell[data-r="${tr}"][data-c="${tc}"]`);
+      if (el) el.classList.add("preview", `preview-${piece.side}`);
+    }
+  }
+
+  if (previewToggle) {
+    try {
+      previewToggle.checked = localStorage.getItem(PREVIEW_KEY) === "1";
+    } catch (err) {
+      /* storage unavailable: start unchecked */
+    }
+    previewToggle.addEventListener("change", () => {
+      try {
+        localStorage.setItem(PREVIEW_KEY, previewToggle.checked ? "1" : "0");
+      } catch (err) {
+        /* storage unavailable: the choice lasts for this page only */
+      }
+      if (!previewToggle.checked) clearPreview();
+    });
+    boardEl.addEventListener("mouseover", (e) => showPreview(e.target.closest(".cell")));
+    boardEl.addEventListener("mouseleave", clearPreview);
   }
 
   // ---- Server -------------------------------------------------------------

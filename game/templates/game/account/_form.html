@@ -1,4 +1,4 @@
-{% load i18n static %}
+{% load i18n static assets %}
 {% csrf_token %}
 {% if form.non_field_errors %}<div class="error">{{ form.non_field_errors }}</div>{% endif %}
 {% for field in form %}
@@ -22,4 +22,4 @@
   </div>
 {% endfor %}
 {% if next %}<input type="hidden" name="next" value="{{ next }}">{% endif %}
-<script src="{% static 'game/password.js' %}" defer></script>
+<script src="{% asset 'game/password.js' %}" defer></script>

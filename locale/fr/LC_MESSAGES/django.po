@@ -981,3 +981,11 @@ msgstr ""
 #: game/views.py:223 game/views.py:245
 msgid "You are not playing in this game."
 msgstr "Vous ne jouez pas dans cette partie."
+
+#: game/templates/game/base.html game/templates/game/legal.html
+msgid "Legal notice"
+msgstr "Mentions légales"
+
+#: game/templates/game/game.html
+msgid "Show where a piece can move on hover"
+msgstr "Afficher au survol les déplacements possibles d’une pièce"

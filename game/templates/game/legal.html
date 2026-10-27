@@ -1,0 +1,7 @@
+{% extends "game/base.html" %}
+{% load i18n %}
+{% block title %}{% translate "Legal notice" %} · Rythmomachie{% endblock %}
+{% block content %}
+{% get_current_language as LANGUAGE_CODE %}
+{% if LANGUAGE_CODE == "fr" %}{% include "game/legal_fr.html" %}{% else %}{% include "game/legal_en.html" %}{% endif %}
+{% endblock %}
