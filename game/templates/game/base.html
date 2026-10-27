@@ -4,6 +4,9 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>{% block title %}Rythmomachie{% endblock %}</title>
+  <meta name="theme-color" content="#8a3b12">
+  <link rel="manifest" href="{% url 'game:manifest' %}">
+  <link rel="icon" href="{% static 'game/icons/icon.svg' %}" type="image/svg+xml">
   <link rel="stylesheet" href="{% asset 'game/style.css' %}">
 </head>
 <body>

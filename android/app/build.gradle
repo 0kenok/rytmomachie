@@ -1,0 +1,50 @@
+plugins {
+    id 'com.android.application'
+}
+
+android {
+    namespace 'fr.rythmomachie.app'
+    compileSdk 35
+
+    defaultConfig {
+        applicationId 'fr.rythmomachie.app'
+        minSdk 26
+        targetSdk 35
+        versionCode 1
+        versionName '1.0'
+    }
+
+    // The keystore and its password live outside the repository, in
+    // ~/.gradle/gradle.properties (RYTHMO_KEYSTORE, RYTHMO_KEYSTORE_PASSWORD,
+    // RYTHMO_KEY_ALIAS). Its SHA-256 fingerprint must match the one the site
+    // publishes in /.well-known/assetlinks.json.
+    signingConfigs {
+        release {
+            if (project.hasProperty('RYTHMO_KEYSTORE')) {
+                storeFile file(RYTHMO_KEYSTORE)
+                storePassword RYTHMO_KEYSTORE_PASSWORD
+                keyAlias RYTHMO_KEY_ALIAS
+                keyPassword RYTHMO_KEYSTORE_PASSWORD
+            }
+        }
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            signingConfig signingConfigs.release
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+}
+
+dependencies {
+    implementation 'com.google.androidbrowserhelper:androidbrowserhelper:2.5.0'
+    implementation 'androidx.appcompat:appcompat:1.7.0'
+    // Aligns the kotlin-stdlib-jdk7/jdk8 versions pulled in by the libraries above.
+    implementation platform('org.jetbrains.kotlin:kotlin-bom:1.8.22')
+}

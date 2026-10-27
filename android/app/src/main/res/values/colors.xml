@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Same palette as game/static/game/style.css -->
+    <color name="accent">#8A3B12</color>
+    <color name="background">#F4EFE4</color>
+    <color name="piece">#F6ECD9</color>
+</resources>

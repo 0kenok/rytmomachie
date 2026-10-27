@@ -33,6 +33,19 @@ class ViewTests(TestCase):
         self.client.cookies[settings.LANGUAGE_COOKIE_NAME] = "fr"
         self.assertContains(self.client.get(legal), "Mentions légales")
 
+    def test_manifest_linked_from_pages(self):
+        url = reverse("game:manifest")
+        self.assertContains(self.client.get(reverse("game:home")), f'<link rel="manifest" href="{url}">')
+        res = self.client.get(url)
+        self.assertEqual(res["Content-Type"], "application/manifest+json")
+        self.assertEqual(res.json()["display"], "standalone")
+
+    def test_assetlinks_names_android_app(self):
+        res = self.client.get("/.well-known/assetlinks.json")
+        target = res.json()[0]["target"]
+        self.assertEqual(target["package_name"], settings.ANDROID_APP_ID)
+        self.assertEqual(target["sha256_cert_fingerprints"], settings.ANDROID_CERT_FINGERPRINTS)
+
     def test_create_redirects_with_key(self):
         res = self.create(target_body="5")
         game = Game.objects.get()

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Same shapes as game/static/game/icons/icon.svg: triangle, circle, square. -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="512"
+    android:viewportHeight="512">
+    <path
+        android:fillColor="@color/piece"
+        android:pathData="M256,150L316,250L196,250Z" />
+    <path
+        android:fillColor="@color/piece"
+        android:pathData="M148,318a48,48 0,1 0,96 0a48,48 0,1 0,-96 0Z" />
+    <path
+        android:fillColor="@color/piece"
+        android:pathData="M270,270h96v96h-96Z" />
+</vector>

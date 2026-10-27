@@ -150,6 +150,13 @@ STATIC_ROOT = os.environ.get('DJANGO_STATIC_ROOT', BASE_DIR / 'staticfiles')
 
 # Production behind the nginx reverse proxy
 
+# Android app (Trusted Web Activity) allowed to open the site full screen,
+# published in /.well-known/assetlinks.json.
+ANDROID_APP_ID = 'fr.rythmomachie.app'
+ANDROID_CERT_FINGERPRINTS = [
+    '26:B9:36:86:50:E7:DD:1E:D0:06:92:35:60:99:FE:E0:24:0C:02:B3:C9:B2:91:2C:C9:23:A1:E8:D6:8F:FE:8B',
+]
+
 CSRF_TRUSTED_ORIGINS = [
     origin for origin in os.environ.get('DJANGO_CSRF_TRUSTED_ORIGINS', '').split(',') if origin
 ]

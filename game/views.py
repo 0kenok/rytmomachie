@@ -5,6 +5,7 @@ from django.conf import settings
 from django.db import transaction
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
+from django.templatetags.static import static
 from django.urls import reverse
 from django.utils import timezone
 from django.utils.translation import gettext as _
@@ -87,6 +88,40 @@ def rules(request):
 
 def legal(request):
     return render(request, "game/legal.html")
+
+
+@require_GET
+def manifest(request):
+    icons = [
+        {"src": static(f"game/icons/icon-{size}.png"), "sizes": f"{size}x{size}",
+         "type": "image/png", "purpose": "any maskable"}
+        for size in (192, 512)
+    ]
+    data = {
+        "name": "Rythmomachie",
+        "short_name": "Rythmomachie",
+        "start_url": reverse("game:home"),
+        "scope": "/",
+        "display": "standalone",
+        "background_color": "#f4efe4",
+        "theme_color": "#8a3b12",
+        "icons": icons,
+    }
+    return JsonResponse(data, content_type="application/manifest+json")
+
+
+@require_GET
+def assetlinks(request):
+    # Lets the Android app show the site full screen, without an address bar.
+    data = [{
+        "relation": ["delegate_permission/common.handle_all_urls"],
+        "target": {
+            "namespace": "android_app",
+            "package_name": settings.ANDROID_APP_ID,
+            "sha256_cert_fingerprints": settings.ANDROID_CERT_FINGERPRINTS,
+        },
+    }]
+    return JsonResponse(data, safe=False)
 
 
 def leaderboard(request):

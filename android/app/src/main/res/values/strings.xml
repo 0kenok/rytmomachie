@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Rythmomachie</string>
+    <string name="launch_url">https://rythmomachie.fr/</string>
+    <string name="provider_authority">fr.rythmomachie.app.fileprovider</string>
+    <string name="asset_statements" translatable="false">
+        [{
+            \"relation\": [\"delegate_permission/common.handle_all_urls\"],
+            \"target\": {\"namespace\": \"web\", \"site\": \"https://rythmomachie.fr\"}
+        }]
+    </string>
+</resources>

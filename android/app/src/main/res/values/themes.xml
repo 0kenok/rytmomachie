@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Theme.Rythmomachie" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:windowBackground">@color/accent</item>
+        <item name="android:statusBarColor">@color/accent</item>
+    </style>
+</resources>
