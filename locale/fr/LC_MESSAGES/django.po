@@ -989,3 +989,19 @@ msgstr "Mentions légales"
 #: game/templates/game/game.html
 msgid "Show where a piece can move on hover"
 msgstr "Afficher au survol les déplacements possibles d’une pièce"
+
+#: game/templates/game/welcome.html:11
+msgid "Already have an account? Find your games and your ranking."
+msgstr "Déjà un compte ? Retrouvez vos parties et votre classement."
+
+#: game/templates/game/welcome.html:15
+msgid "Create an account to play ranked online games."
+msgstr "Créez un compte pour jouer des parties en ligne classées."
+
+#: game/templates/game/welcome.html:21
+msgid "Play without an account"
+msgstr "Jouer sans compte"
+
+#: game/templates/game/welcome.html:22
+msgid "Play right away against the computer or a friend."
+msgstr "Jouez tout de suite contre l'ordinateur ou un ami."

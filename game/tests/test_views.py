@@ -1,16 +1,18 @@
 import json
 
 from django.conf import settings
+from django.contrib.auth.models import User
 from django.test import TestCase
 from django.urls import reverse
 
-from game import engine
+from game import engine, views
 from game.models import Game
 
 
 class ViewTests(TestCase):
     def setUp(self):
         self.client.cookies[settings.LANGUAGE_COOKIE_NAME] = "en"
+        self.client.cookies[views.GUEST_COOKIE] = "1"
 
     def create(self, **data):
         form = {"mode": Game.LOCAL, "victories": [engine.VICTORY_BODY]}
@@ -187,12 +189,33 @@ class ViewTests(TestCase):
         self.assertEqual(res.status_code, 400)
 
 
+class WelcomeTests(TestCase):
+    def test_first_visit_offers_account_or_guest(self):
+        res = self.client.get(reverse("game:home"), HTTP_ACCEPT_LANGUAGE="en")
+        self.assertTemplateUsed(res, "game/welcome.html")
+        self.assertContains(res, reverse("game:login"))
+        self.assertContains(res, reverse("game:signup"))
+        self.assertContains(res, "Play without an account")
+        self.assertNotContains(res, 'name="language"')
+
+    def test_welcome_follows_browser_language(self):
+        res = self.client.get(reverse("game:home"), HTTP_ACCEPT_LANGUAGE="fr")
+        self.assertContains(res, "Jouer sans compte")
+
+    def test_playing_as_guest_shows_new_game(self):
+        res = self.client.post(reverse("game:guest"))
+        self.assertRedirects(res, reverse("game:home"), fetch_redirect_response=False)
+        self.assertContains(self.client.get(reverse("game:home")), "Start game")
+
+    def test_logged_in_user_skips_welcome(self):
+        user = User.objects.create_user("ada", password="s3cret-pass")
+        self.client.force_login(user)
+        self.assertTemplateUsed(self.client.get(reverse("game:home")), "game/home.html")
+
+
 class LanguageTests(TestCase):
-    def test_first_visit_asks_for_language(self):
-        res = self.client.get(reverse("game:home"))
-        self.assertTemplateUsed(res, "game/choose_language.html")
-        self.assertContains(res, "Français")
-        self.assertContains(res, "English")
+    def setUp(self):
+        self.client.cookies[views.GUEST_COOKIE] = "1"
 
     def test_choosing_french_sets_cookie_and_translates(self):
         res = self.client.post(reverse("set_language"), {"language": "fr", "next": reverse("game:home")})

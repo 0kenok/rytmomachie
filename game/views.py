@@ -33,11 +33,23 @@ def _illegal(exc):
     return _error(ILLEGAL_MOVE_MESSAGES.get(exc.code, str(exc)), 400)
 
 
+GUEST_COOKIE = "rythmo_guest"
+
+
 def home(request):
-    # First visit: ask for a language before anything else.
-    if settings.LANGUAGE_COOKIE_NAME not in request.COOKIES:
-        return render(request, "game/choose_language.html")
+    # First visit: offer to log in, sign up or play without an account.
+    # The language comes from the browser and can be changed in the header.
+    if not request.user.is_authenticated and GUEST_COOKIE not in request.COOKIES:
+        return render(request, "game/welcome.html")
     return render(request, "game/home.html", {"form": NewGameForm()})
+
+
+@require_POST
+def play_as_guest(request):
+    res = redirect("game:home")
+    res.set_cookie(GUEST_COOKIE, "1", max_age=365 * 24 * 3600, samesite="Lax",
+                   secure=request.is_secure())
+    return res
 
 
 def js_strings():

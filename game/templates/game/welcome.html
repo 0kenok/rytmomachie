@@ -1,0 +1,26 @@
+{% extends "game/base.html" %}
+{% load i18n %}
+{% block nav %}{% endblock %}
+{% block content %}
+<section class="welcome">
+  <h1>Rythmomachie</h1>
+  <p class="tagline">{% translate "The philosophers' game" %}</p>
+  <div class="welcome-options">
+    <a class="welcome-option" href="{% url 'game:login' %}?next={% url 'game:home' %}">
+      <span class="option-title">{% translate "Log in" %}</span>
+      <span class="option-text">{% translate "Already have an account? Find your games and your ranking." %}</span>
+    </a>
+    <a class="welcome-option" href="{% url 'game:signup' %}">
+      <span class="option-title">{% translate "Sign up" %}</span>
+      <span class="option-text">{% translate "Create an account to play ranked online games." %}</span>
+    </a>
+    <form action="{% url 'game:guest' %}" method="post">
+      {% csrf_token %}
+      <button type="submit" class="welcome-option">
+        <span class="option-title">{% translate "Play without an account" %}</span>
+        <span class="option-text">{% translate "Play right away against the computer or a friend." %}</span>
+      </button>
+    </form>
+  </div>
+</section>
+{% endblock %}
